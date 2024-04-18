@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Idee extends Model
+class Commentaire extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'titre',
         'contenu',
         'user_id',
-        'category_id',
-        'image'
+        'idee_id',
+        'replay_id'
     ];
 
     public function user()
@@ -22,18 +21,18 @@ class Idee extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function idee()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Idee::class);
     }
 
-    public function commentaires()
+    public function replay()
     {
-        return $this->hasMany(Commentaire::class);
+        return $this->belongsTo(self::class, 'replay_id');
     }
 
-    public function tags()
+    public function replies()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->hasMany(self::class, 'replay_id');
     }
 }

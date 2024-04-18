@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PosteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/home', [AuthController::class, 'index'])->name('home');
 
+Route::post('/create', [PosteController::class, 'store'])->name('create');
+Route::post('/addComment', [PosteController::class, 'addComment'])->name('addComment');
+Route::post('/follow_tag', [PosteController::class, 'follow_tag'])->name('follow_tag');
