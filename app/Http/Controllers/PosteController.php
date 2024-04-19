@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
 use App\Models\Idee;
+use App\Models\user_follows_Category;
 use App\Models\user_follows_Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PosteController extends Controller
 {
+    public function postes(Request $request)
+    {
+        $postes = Idee::all();
+        return view('admin.postes', compact('postes'));
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -50,7 +56,17 @@ class PosteController extends Controller
     
         return back()->with('success', 'Votre idée a été créée avec succès.');
     }
-
+    public function follow_category(Request $request)
+    {
+    
+        user_follows_Category::create([
+            'user_id' => auth()->id(),
+            'category_id' => $request->cat_id,
+        ]);
+    
+        return back()->with('success', 'Votre idée a été créée avec succès.');
+    }
+    
     public function addComment(Request $request)
     {
         $validatedData = $request->validate([
@@ -63,8 +79,23 @@ class PosteController extends Controller
         $commentaire->user_id = auth()->user()->id;
         $commentaire->idee_id = $validatedData['idee_id'];
         $commentaire->save();
-
+        
         return back()->with('success', 'Votre commentaire a été créée avec succès.');
+    }
+    
+    public function show_poste($id)
+    {
+        $postes = Idee::find($id);
+        $postes->isHidden = 0;
+        $postes->save();
+        return redirect()->route('postes');
+    }
+    public function hide_poste($id)
+    {
+        $postes = Idee::find($id);
+        $postes->isHidden = 1;
+        $postes->save();
+        return redirect()->route('postes');
     }
 
 }

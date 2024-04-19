@@ -92,50 +92,6 @@
                                         </div> <ion-icon name="close"
                                             class="text-base absolute right-3 top-1/2 -translate-y-1/2 "></ion-icon>
                                     </a>
-                                    <a href="#"
-                                        class=" relative px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
-                                        <img src="assets/images/avatars/avatar-2.jpg" class="w-9 h-9 rounded-full">
-                                        <div>
-                                            <div> Martin Gray </div>
-                                            <div class="text-xs text-blue-500 font-medium mt-0.5"> Friend </div>
-                                        </div> <ion-icon name="close"
-                                            class="text-base absolute right-3 top-1/2 -translate-y-1/2 "></ion-icon>
-                                    </a>
-                                    <a href="#"
-                                        class=" relative px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
-                                        <img src="assets/images/group/group-2.jpg" class="w-9 h-9 rounded-full">
-                                        <div>
-                                            <div> Delicious Foods </div>
-                                            <div class="text-xs text-rose-500 font-medium mt-0.5"> Group </div>
-                                        </div> <ion-icon name="close"
-                                            class="text-base absolute right-3 top-1/2 -translate-y-1/2 "></ion-icon>
-                                    </a>
-                                    <a href="#"
-                                        class=" relative px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
-                                        <img src="assets/images/group/group-1.jpg" class="w-9 h-9 rounded-full">
-                                        <div>
-                                            <div> Delicious Foods </div>
-                                            <div class="text-xs text-yellow-500 font-medium mt-0.5"> Page </div>
-                                        </div> <ion-icon name="close"
-                                            class="text-base absolute right-3 top-1/2 -translate-y-1/2 "></ion-icon>
-                                    </a>
-                                    <a href="#"
-                                        class=" relative px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
-                                        <img src="assets/images/avatars/avatar-6.jpg" class="w-9 h-9 rounded-full">
-                                        <div>
-                                            <div> John Welim </div>
-                                            <div class="text-xs text-blue-500 font-medium mt-0.5"> Friend </div>
-                                        </div> <ion-icon name="close"
-                                            class="text-base absolute right-3 top-1/2 -translate-y-1/2 "></ion-icon>
-                                    </a>
-                                    <a href="#"
-                                        class="hidden relative  px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
-                                        <ion-icon class="text-2xl" name="search-outline"></ion-icon> Creative ideas
-                                        about Business </a>
-                                    <a href="#"
-                                        class="hidden relative  px-3 py-1.5 flex items-center gap-4 hover:bg-secondery rounded-lg dark:hover:bg-white/10">
-                                        <ion-icon class="text-2xl" name="search-outline"></ion-icon> 8 Facts About
-                                        Writting </a>
                                 </nav>
                                 <hr class="-mx-2 mt-2 hidden">
                                 <div class="flex justify-end pr-2 text-sm font-medium text-red-500 hidden">
@@ -602,21 +558,25 @@
                             </div>
 
                             <div class="side-list">
-                                @foreach ($postes as $poste)
-                                    <div class="side-list-item">
-                                        <a href="timeline.html">
-                                            <img src="assets/images/avatars/avatar-2.jpg" alt=""
-                                                class="side-list-image rounded-full">
-                                        </a>
-                                        <div class="flex-1">
+                                @foreach ($categories as $categorie)
+                                    <form action="{{route('follow_category')}}" method="post">
+                                        @csrf
+                                        <div class="side-list-item">
                                             <a href="timeline.html">
-                                                <h4 class="side-list-title"> {{ $poste->titre }} </h4>
+                                                <img src="assets/images/avatars/avatar-2.jpg" alt=""
+                                                    class="side-list-image rounded-full">
                                             </a>
-                                            <div class="side-list-info"> {{ $poste->Category->Nom }} </div>
+                                            <input type="hidden" name="cat_id" value="{{ $categorie->id }}">
+                                            <div class="flex-1">
+                                                <a href="timeline.html">
+                                                    <h4 class="side-list-title"> {{ $categorie->Nom }} </h4>
+                                                </a>
+                                                <div class="side-list-info"> {{ $categorie->idees->count() }} Idée Publiée </div>
+                                            </div>
+                                            <button type="submit"
+                                                class="button bg-primary-soft text-primary dark:text-white">follow</button>
                                         </div>
-                                        <button
-                                            class="button bg-primary-soft text-primary dark:text-white">follow</button>
-                                    </div>
+                                    </form>
                                 @endforeach
 
 

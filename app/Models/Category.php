@@ -17,4 +17,9 @@ class Category extends Model
     {
         return $this->hasMany(Idee::class);
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'user_follows_category');
+    }
 }

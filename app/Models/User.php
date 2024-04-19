@@ -58,6 +58,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Tag::class, 'user_follows_tag');
     }
+    public function followedCategories()
+    {
+        return $this->belongsToMany(Category::class, 'user_follows_category');
+    }
 
     public function ideas()
     {

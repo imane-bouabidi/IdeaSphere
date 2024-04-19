@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AminController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HashtagController;
 use App\Http\Controllers\PosteController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +36,35 @@ Route::get('/home', [AuthController::class, 'index'])->name('home');
 Route::post('/create', [PosteController::class, 'store'])->name('create');
 Route::post('/addComment', [PosteController::class, 'addComment'])->name('addComment');
 Route::post('/follow_tag', [PosteController::class, 'follow_tag'])->name('follow_tag');
+Route::post('/follow_category', [PosteController::class, 'follow_category'])->name('follow_category');
+
+
+
+//admin  
+
+
+Route::get('/admin', [AuthController::class, 'admin'])->name('admin');
+
+//hashtags
+Route::get('/hashtags', [AminController::class, 'hashtags'])->name('hashtags');
+Route::post('/Edit_Hashtag', [HashtagController::class, 'Edit_Hashtag'])->name('Edit_Hashtag');
+Route::get('/delete_Hashtag/{id}', [HashtagController::class, 'delete_Hashtag'])->name('delete_Hashtag');
+Route::post('/addHashtag', [HashtagController::class, 'addHashtag'])->name('addHashtag');
+
+//category
+Route::get('/categories', [AminController::class, 'categories'])->name('categories');
+Route::post('/addCategory', [CategoryController::class, 'addCategory'])->name('addCategory');
+Route::post('/Edit_category', [CategoryController::class, 'Edit_category'])->name('Edit_category');
+Route::get('/delete_Category/{id}', [CategoryController::class, 'delete_Category'])->name('delete_Category');
+
+
+//postes
+Route::get('/postes', [PosteController::class, 'postes'])->name('postes');
+Route::post('/addPoste', [PosteController::class, 'addPoste'])->name('addPoste');
+Route::post('/Edit_Poste', [PosteController::class, 'Edit_Poste'])->name('Edit_Poste');
+Route::get('/delete_Poste/{id}', [PosteController::class, 'delete_Poste'])->name('delete_Poste');
+Route::get('/hide_poste/{id}', [PosteController::class, 'hide_poste'])->name('hide_poste');
+Route::get('/show_poste/{id}', [PosteController::class, 'show_poste'])->name('show_poste');
+
+Route::get('/poste_details/{id}', [PosteController::class, 'poste_details'])->name('poste_details');
+
