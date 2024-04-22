@@ -21,7 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'Role_id',
+        'role',
+        'blocked',
+        'image',
+        'back_image',
+        'description',
+        'bio',
     ];
 
     /**
@@ -44,15 +49,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function hasRole($role)
-    {
-        return $this->role()->where('Nom', $role)->exists();
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'Role_id');
-    }
 
     public function followedTags()
     {

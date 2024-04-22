@@ -105,14 +105,22 @@
 
                         <!-- header icons -->
                         <div
-                            class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-black">
-
+                            class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-white">
+                            
                             <!-- profile -->
                             <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
+                                @auth
                                 <img src="assets/images/avatars/avatar-2.jpg" alt=""
                                     class="sm:w-9 sm:h-9 w-7 h-7 rounded-full shadow shrink-0">
-                            </div>
-                            <div class="hidden bg-white rounded-lg drop-shadow-xl dark:bg-slate-700 w-64 border2"
+                                </div>
+                                <a href="{{route('profile',$user->id)}}">{{$user->name}}</a>
+                                <a href="{{route('logout')}}">logout</a>
+                                @else
+                                <a href="{{route('register')}}">Register</a>
+                                <a href="{{route('login')}}">Login</a>
+
+                                @endauth
+                            {{-- <div class="hidden bg-white rounded-lg drop-shadow-xl dark:bg-slate-700 w-64 border2"
                                 uk-drop="offset:6;pos: bottom-right;animate-out: true; animation: uk-animation-scale-up uk-transform-origin-top-right ">
 
                                 <a href="timeline.html">
@@ -180,7 +188,7 @@
 
                                 </nav>
 
-                            </div>
+                            </div> --}}
 
                             <div class="flex items-center gap-2 hidden">
 
@@ -410,7 +418,7 @@
                                     <a href="timeline.html"> <img src="assets/images/avatars/avatar-5.jpg"
                                             alt="" class="w-9 h-9 rounded-full"> </a>
                                     <div class="flex-1">
-                                        <a href="timeline.html">
+                                        <a href="{{route('profile',$poste->user->id)}}">
                                             <h4 class="text-black dark:text-white"> {{ $poste->user->name }} </h4>
                                         </a>
                                     </div>
@@ -438,6 +446,11 @@
                                 </div>
 
                                 <div class="sm:px-4 p-2.5 pt-0">
+                                    <div class="relative w-full lg:h-96 h-full sm:px-4">
+                                        @if ($poste->image)
+                                        <img src="{{ asset('images/' .$poste->image) }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
+                                        @endif
+                                    </div>
                                     <p class="font-normal"> {{ $poste->contenu }}</p><br>
                                     <p class="font-normal">
                                         @foreach ($poste->tags as $tag)
@@ -503,7 +516,7 @@
                                             <a href="timeline.html"> <img src="assets/images/avatars/avatar-2.jpg"
                                                     alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
                                             <div class="flex-1">
-                                                <a href="timeline.html"
+                                                <a href="{{route('profile',$user->id)}}"
                                                     class="text-black font-medium inline-block dark:text-white">
                                                     {{ $comment->user->name }}
                                                 </a>
@@ -553,7 +566,7 @@
                         <div class="box p-5 px-6">
 
                             <div class="flex items-baseline justify-between text-black dark:text-white">
-                                <h3 class="font-bold text-base"> Ideas you may like </h3>
+                                <h3 class="font-bold text-base"> Categories you may like </h3>
                                 {{-- <a href="#" class="text-sm text-blue-500">See all</a> --}}
                             </div>
 
@@ -562,10 +575,6 @@
                                     <form action="{{route('follow_category')}}" method="post">
                                         @csrf
                                         <div class="side-list-item">
-                                            <a href="timeline.html">
-                                                <img src="assets/images/avatars/avatar-2.jpg" alt=""
-                                                    class="side-list-image rounded-full">
-                                            </a>
                                             <input type="hidden" name="cat_id" value="{{ $categorie->id }}">
                                             <div class="flex-1">
                                                 <a href="timeline.html">
@@ -589,7 +598,7 @@
                         <div class="box p-5 px-6 border1 dark:bg-dark2">
 
                             <div class="flex justify-between text-black dark:text-white">
-                                <h3 class="font-bold text-base"> Trends for you </h3>
+                                <h3 class="font-bold text-base"> Hashtags for you </h3>
                                 <button type="button"> <ion-icon name="sync-outline" class="text-xl"></ion-icon>
                                 </button>
                             </div>

@@ -15,30 +15,41 @@ class AuthController extends Controller
 {
     public function index()
     {
-        $tags = Tag::all();
-        $categories = Category::all();
-        $postes = Idee::all();
+        if (Auth::check()) {
+            $user = User::find(Auth::user()->id);
+            $tags = Tag::all();
+            $categories = Category::all();
+            $postes = Idee::all();
 
-
-        // $user = Auth::user();
-        // $followedTags = $user ? $user->followedTags : collect(); 
-        // $ideaIds = [];
-        // if ($followedTags->isNotEmpty()) {
-        //     $ideaIds = $followedTags->pluck('id')->toArray();
-        //     $postes = Idee::whereIn('id', $ideaIds)->latest()->paginate(10); 
-        // } else {
-        //     $postes = Idee::all();
-        // }
-
-        return view('home', compact(['categories', 'postes', 'tags']));
+            return view('home', compact(['categories', 'postes', 'tags', 'user']));
+        } else {
+            // Handle the case where the user is not authenticated
+            return redirect()->route('login');
+        }
     }
+
+    // $user = Auth::user();
+    // $followedTags = $user ? $user->followedTags : collect(); 
+    // $ideaIds = [];
+    // if ($followedTags->isNotEmpty()) {
+    //     $ideaIds = $followedTags->pluck('id')->toArray();
+    //     $postes = Idee::whereIn('id', $ideaIds)->latest()->paginate(10); 
+    // } else {
+    //     $postes = Idee::all();
+    // }
+
+
     public function showLoginForm()
     {
         return view('auth.login');
     }
     public function admin()
     {
-        return view('admin.dashboard');
+        $postes = Idee::all()->count();
+        $users = User::all()->count();
+        $categories = Category::all()->count();
+        $hashtags = Tag::all()->count();
+        return view('admin.dashboard', compact(['postes', 'users', 'categories', 'hashtags']));
     }
 
     public function login(Request $request)
@@ -50,7 +61,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            if ($user->hasRole('admin')) {
+            if ($user->role == 'admin') {
                 return redirect()->route('admin.dashboard');
             } else {
                 return redirect()->intended('home');
@@ -77,8 +88,13 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user',
+            'blocked' => 0,
+            'image'=>'user.jpg',
+            'back_image'=>'',
+            'description'=>'',
+            'bio'=>'',
         ]);
-        $user->assignRole('user');
         return redirect()->route('login')->with('success', 'Votre compte a été créé avec succès. Veuillez vous connecter.');
     }
 

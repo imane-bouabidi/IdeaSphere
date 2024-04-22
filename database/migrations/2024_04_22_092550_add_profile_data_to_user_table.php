@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('idees', function (Blueprint $table) {
-            $table->boolean('isHidden');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('image');
+            $table->string('back_image');
+            $table->string('description');
+            $table->string('bio');
         });
     }
 
@@ -21,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('idees', function (Blueprint $table) {
+        Schema::table('user', function (Blueprint $table) {
             //
         });
     }

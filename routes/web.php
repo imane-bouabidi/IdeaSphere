@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HashtagController;
 use App\Http\Controllers\PosteController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,4 +68,15 @@ Route::get('/hide_poste/{id}', [PosteController::class, 'hide_poste'])->name('hi
 Route::get('/show_poste/{id}', [PosteController::class, 'show_poste'])->name('show_poste');
 
 Route::get('/poste_details/{id}', [PosteController::class, 'poste_details'])->name('poste_details');
+
+//users for admin
+
+Route::get('/users', [AminController::class, 'users'])->name('users');
+Route::get('/users', [AminController::class, 'users'])->name('users');
+Route::get('/banner_user/{id}', [AminController::class, 'banner_user'])->name('banner_user');
+Route::get('/debanner_user/{id}', [AminController::class, 'debanner_user'])->name('debanner_user');
+
+
+//User
+Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
 

@@ -39,6 +39,7 @@ class PosteController extends Controller
             'user_id' => auth()->id(),
             'category_id' => $request->category_id,
             'image' => $imageName,
+            'isHidden' => 0,
         ]);
     
         $tags = $request->input('tags', []);

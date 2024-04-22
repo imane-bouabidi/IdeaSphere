@@ -17,8 +17,8 @@
                 <div class="d-flex justify-content-between align-items-center py-3 px-4">
                     <h1 class="m-0">Home</h1>
                     <div>
-                        <a href="#" class="text-white mr-12">home</a>
-                        <a href="#" class="text-white">Logout</a>
+                        <a href="{{route('home')}}" class="text-white mr-12">home</a>
+                        <a href="{{route('logout')}}" class="text-white">Logout</a>
                     </div>
                 </div>
             </header>
@@ -30,6 +30,13 @@
                     <div class="mt-3"></div>
 
                     <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link flex-fill text-white" href="{{ route('admin') }}"
+                                style="background-color: #6c757d;">
+                                <span class="nav-icon"><i class="fas fa-hashtag"></i></span>
+                                <span class="nav-text">Statistiques</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link flex-fill text-white" href="{{ route('hashtags') }}"
                                 style="background-color: #6c757d;">
@@ -45,31 +52,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link flex-fill text-white" href="#" style="background-color: #6c757d;"
+                            <a class="nav-link flex-fill text-white" href="{{route('users')}}" style="background-color: #6c757d;"
                                 data-bs-toggle="collapse" data-bs-target="#userManagementCollapse">
                                 <span class="nav-icon"><i class="fas fa-users"></i></span>
                                 <span class="nav-text">Users</span>
                             </a>
-                            <ul class="collapse" id="userManagementCollapse">
-                                <li class="nav-item">
-                                    <a class="nav-link flex-fill text-white" href="#"
-                                        style="background-color: #6c757d;">
-                                        <span class="nav-text">Manage Roles</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link flex-fill text-white" href="#"
-                                        style="background-color: #6c757d;">
-                                        <span class="nav-text">Set Banner User</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link flex-fill text-white" href="#"
-                                        style="background-color: #6c757d;">
-                                        <span class="nav-text">View User List</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link flex-fill text-white" href="{{route('postes')}}" style="background-color: #6c757d;">
