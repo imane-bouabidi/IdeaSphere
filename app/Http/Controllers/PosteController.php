@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
 use App\Models\Idee;
+use App\Models\User;
 use App\Models\user_follows_Category;
 use App\Models\user_follows_Tag;
 use Illuminate\Http\Request;
@@ -97,6 +98,12 @@ class PosteController extends Controller
         $postes->isHidden = 1;
         $postes->save();
         return redirect()->route('postes');
+    }
+    public function poste_details($id)
+    {
+        $user = User::find(Auth::user()->id);
+        $poste = Idee::find($id);
+        return view('SinglePost',compact(['poste','user']));
     }
 
 }

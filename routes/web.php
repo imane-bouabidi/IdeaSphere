@@ -79,4 +79,7 @@ Route::get('/debanner_user/{id}', [AminController::class, 'debanner_user'])->nam
 
 //User
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
+Route::post('/edit-description', [UserController::class, 'edit_description'])->name('edit-description');
+Route::post('/edit-bio', [UserController::class, 'edit_bio'])->name('edit-bio');
+Route::post('/editPost', [UserController::class, 'editPost'])->name('editPost');
 
