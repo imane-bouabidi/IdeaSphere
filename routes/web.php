@@ -66,8 +66,10 @@ Route::post('/Edit_Poste', [PosteController::class, 'Edit_Poste'])->name('Edit_P
 Route::get('/delete_Poste/{id}', [PosteController::class, 'delete_Poste'])->name('delete_Poste');
 Route::get('/hide_poste/{id}', [PosteController::class, 'hide_poste'])->name('hide_poste');
 Route::get('/show_poste/{id}', [PosteController::class, 'show_poste'])->name('show_poste');
-
 Route::get('/poste_details/{id}', [PosteController::class, 'poste_details'])->name('poste_details');
+Route::post('/editPost', [PosteController::class, 'editPost'])->name('editPost');
+Route::get('/deletePoste/{id}', [PosteController::class, 'deletePoste'])->name('deletePoste');
+
 
 //users for admin
 
@@ -81,5 +83,4 @@ Route::get('/debanner_user/{id}', [AminController::class, 'debanner_user'])->nam
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
 Route::post('/edit-description', [UserController::class, 'edit_description'])->name('edit-description');
 Route::post('/edit-bio', [UserController::class, 'edit_bio'])->name('edit-bio');
-Route::post('/editPost', [UserController::class, 'editPost'])->name('editPost');
 

@@ -27,6 +27,39 @@ class PosteController extends Controller
             'tags' => 'nullable|array',
         ]);
     
+        $imageName = '';
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+        }
+    
+        $idee = Idee::create([
+            'titre' => $request->titre,
+            'contenu' => $request->contenu,
+            'user_id' => auth()->id(),
+            'category_id' => $request->category_id,
+            'image' => $imageName,
+            'isHidden' => 0,
+        ]);
+    
+        $tags = $request->input('tags', []);
+        $idee->tags()->attach($tags);
+    
+        return back()->with('success', 'Votre idée a été créée avec succès.');
+    }
+
+    public function editPost(Request $request)
+    {
+        $request->validate([
+            'titre' => 'required|string|max:255',
+            'contenu' => 'required|string',
+            'image' => 'nullable|image|max:2048',
+            'imgActuelle' => 'nullable|image|max:2048',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|array',
+        ]);
+    
         $imageName = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -104,6 +137,12 @@ class PosteController extends Controller
         $user = User::find(Auth::user()->id);
         $poste = Idee::find($id);
         return view('SinglePost',compact(['poste','user']));
+    }
+    public function deletePoste($id)
+    {
+        $poste = Idee::find($id);
+        $poste->delete();
+        return back();
     }
 
 }

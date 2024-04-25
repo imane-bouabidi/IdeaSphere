@@ -108,8 +108,8 @@
                             class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-white">
 
                             <!-- profile -->
-                            <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
-                                @auth
+                            @auth
+                                <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
                                     <a href="{{ route('profile', $authUser->id) }}">
                                         @if ($authUser->image)
                                             <img src="{{ asset('images/' . $authUser->image) }}" alt=""
@@ -241,6 +241,8 @@
 
                 </div>
 
+                {{-- ici ************************************************************************************************************************* --}}
+
                 <div class="flex 2xl:gap-12 gap-10 mt-8 max-lg:flex-col" id="js-oversized">
 
                     <!-- feed story -->
@@ -291,158 +293,266 @@
                         @endif
 
                         <!--  post image-->
-                        @foreach ($postes as $poste)
-                            <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2">
+                        @if ($postes)
+                            @foreach ($postes as $poste)
+                                <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2">
 
-                                <!-- post heading -->
-                                <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
-                                    <a href="{{ route('profile', $poste->user->id) }}">
-                                        @if ($poste->user->image)
-                                            <img src="{{ asset('images/' . $poste->user->image) }}" alt=""
-                                                class="w-9 h-9 rounded-full">
-                                        @else
-                                            <img src="{{ asset('images/user.jpg') }}" alt=""
-                                                class="w-9 h-9 rounded-full">
-                                        @endif
+                                    <!-- post heading -->
+                                    <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
+                                        <a href="{{ route('profile', $poste->user->id) }}">
+                                            @if ($poste->user->image)
+                                                <img src="{{ asset('images/' . $poste->user->image) }}"
+                                                    alt="" class="w-9 h-9 rounded-full">
+                                            @else
+                                                <img src="{{ asset('images/user.jpg') }}" alt=""
+                                                    class="w-9 h-9 rounded-full">
+                                            @endif
 
-                                    </a>
-                                    <div class="flex-1">
-                                        <a href="{{ route('profile', $user->id) }}">
-                                            <h4 class="text-black dark:text-white"> {{ $poste->user->name }} </h4>
                                         </a>
-                                    </div>
+                                        <div class="flex-1">
+                                            <a href="{{ route('profile', $user->id) }}">
+                                                <h4 class="text-black dark:text-white"> {{ $poste->user->name }} </h4>
+                                            </a>
+                                        </div>
 
-                                    <div class="-mr-1">
-                                        <button type="button" class="button__ico w-8 h-8" aria-haspopup="true"
-                                            aria-expanded="false"> <ion-icon class="text-xl md hydrated"
-                                                name="ellipsis-horizontal" role="img"
-                                                aria-label="ellipsis horizontal"></ion-icon> </button>
-                                        <div class="w-[245px] uk-dropdown"
-                                            uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
-                                            <nav>
-                                                <div uk-toggle="target: #update-post-{{$poste->id}}">
-                                                    <a href="#"> <ion-icon class="text-xl shrink-0 md hydrated"
-                                                            name="bookmark-outline" role="img"
-                                                            aria-label="bookmark outline"></ion-icon> Update </a>
-                                                </div>
-                                                <hr>
-                                                <a href="#"
-                                                    class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
-                                                    <ion-icon class="text-xl shrink-0 md hydrated"
-                                                        name="stop-circle-outline" role="img"
-                                                        aria-label="stop circle outline"></ion-icon> Delete </a>
-                                            </nav>
+                                        <div class="-mr-1">
+                                            <button type="button" class="button__ico w-8 h-8" aria-haspopup="true"
+                                                aria-expanded="false"> <ion-icon class="text-xl md hydrated"
+                                                    name="ellipsis-horizontal" role="img"
+                                                    aria-label="ellipsis horizontal"></ion-icon> </button>
+                                            <div class="w-[245px] uk-dropdown"
+                                                uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
+                                                <nav>
+                                                    <div uk-toggle="target: #update-post-{{ $poste->id }}">
+                                                        <a href="#"> <ion-icon
+                                                                class="text-xl shrink-0 md hydrated"
+                                                                name="bookmark-outline" role="img"
+                                                                aria-label="bookmark outline"></ion-icon> Update </a>
+                                                    </div>
+                                                    <hr>
+                                                    <div uk-toggle="target: #delete-poste-{{ $poste->id }}"
+                                                        class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
+                                                        <a href="#">
+                                                            <ion-icon class="text-xl shrink-0 md hydrated"
+                                                                name="stop-circle-outline" role="img"
+                                                                aria-label="stop circle outline"></ion-icon> Delete
+                                                        </a>
+                                                    </div>
+                                                </nav>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="sm:px-4 p-2.5 pt-0">
-                                    <div class="relative w-full lg:h-96 h-full sm:px-4">
+                                    <div class="sm:px-4 p-2.5 pt-0">
                                         @if ($poste->image)
-                                            <img src="{{ asset('images/' . $poste->image) }}" alt=""
-                                                class="sm:rounded-lg w-full h-full object-cover">
+                                            <div class="relative w-full lg:h-96 h-full sm:px-4">
+                                                <img src="{{ asset('images/' . $poste->image) }}" alt=""
+                                                    class="sm:rounded-lg w-full h-full object-cover">
+                                            </div>
                                         @endif
+                                        <br>
+                                        <p class="font-normal"> {{ $poste->contenu }}</p><br>
+                                        <p class="font-normal">
+                                            @foreach ($poste->tags as $tag)
+                                                <button
+                                                    class="button bg-primary-soft text-primary dark:text-white">#{{ $tag->Name }}</button>
+                                            @endforeach
+                                        </p>
                                     </div>
-                                    <br>
-                                    <p class="font-normal"> {{ $poste->contenu }}</p><br>
-                                    <p class="font-normal">
-                                        @foreach ($poste->tags as $tag)
-                                            <button
-                                                class="button bg-primary-soft text-primary dark:text-white">#{{ $tag->Name }}</button>
-                                        @endforeach
-                                    </p>
-                                </div>
 
-                                <!-- post icons -->
-                                <div class="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
-                                    <div>
-                                        <div class="flex items-center gap-2.5">
+                                    <!-- post icons -->
+                                    <div class="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
+                                        <div>
+                                            <div class="flex items-center gap-2.5">
+                                                <button type="button"
+                                                    class="button-icon text-red-500 bg-red-100 dark:bg-slate-700">
+                                                    <ion-icon class="text-lg" name="heart"></ion-icon> </button>
+                                                <a href="#">1,300</a>
+                                            </div>
+                                            <div class="p-1 px-2 bg-white rounded-full drop-shadow-md w-[212px] dark:bg-slate-700 text-2xl"
+                                                uk-drop="offset:10;pos: top-left; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-bottom-left">
+
+                                                <div class="flex gap-2"
+                                                    uk-scrollspy="target: > button; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                                    <button type="button"
+                                                        class="text-red-600 hover:scale-125 duration-300">
+                                                        <span> 👍 </span></button>
+                                                    <button type="button"
+                                                        class="text-red-600 hover:scale-125 duration-300">
+                                                        <span> ❤️ </span></button>
+                                                    <button type="button"
+                                                        class="text-red-600 hover:scale-125 duration-300">
+                                                        <span> 😂 </span></button>
+                                                    <button type="button"
+                                                        class="text-red-600 hover:scale-125 duration-300">
+                                                        <span> 😯 </span></button>
+                                                    <button type="button"
+                                                        class="text-red-600 hover:scale-125 duration-300">
+                                                        <span> 😢 </span></button>
+                                                </div>
+
+                                                <div
+                                                    class="w-2.5 h-2.5 absolute -bottom-1 left-3 bg-white rotate-45 hidden">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
                                             <button type="button"
-                                                class="button-icon text-red-500 bg-red-100 dark:bg-slate-700">
-                                                <ion-icon class="text-lg" name="heart"></ion-icon> </button>
-                                            <a href="#">1,300</a>
+                                                class="button-icon bg-slate-200/70 dark:bg-slate-700">
+                                                <ion-icon class="text-lg" name="chatbubble-ellipses"></ion-icon>
+                                            </button>
+                                            <span>260</span>
                                         </div>
-                                        <div class="p-1 px-2 bg-white rounded-full drop-shadow-md w-[212px] dark:bg-slate-700 text-2xl"
-                                            uk-drop="offset:10;pos: top-left; animate-out: true; animation: uk-animation-scale-up uk-transform-origin-bottom-left">
-
-                                            <div class="flex gap-2"
-                                                uk-scrollspy="target: > button; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
-                                                <button type="button"
-                                                    class="text-red-600 hover:scale-125 duration-300">
-                                                    <span> 👍 </span></button>
-                                                <button type="button"
-                                                    class="text-red-600 hover:scale-125 duration-300">
-                                                    <span> ❤️ </span></button>
-                                                <button type="button"
-                                                    class="text-red-600 hover:scale-125 duration-300">
-                                                    <span> 😂 </span></button>
-                                                <button type="button"
-                                                    class="text-red-600 hover:scale-125 duration-300">
-                                                    <span> 😯 </span></button>
-                                                <button type="button"
-                                                    class="text-red-600 hover:scale-125 duration-300">
-                                                    <span> 😢 </span></button>
-                                            </div>
-
-                                            <div
-                                                class="w-2.5 h-2.5 absolute -bottom-1 left-3 bg-white rotate-45 hidden">
-                                            </div>
-                                        </div>
+                                        <button type="button" class="button-icon ml-auto"> <ion-icon class="text-xl"
+                                                name="paper-plane-outline"></ion-icon> </button>
+                                        <button type="button" class="button-icon"> <ion-icon class="text-xl"
+                                                name="share-outline"></ion-icon> </button>
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <button type="button" class="button-icon bg-slate-200/70 dark:bg-slate-700">
-                                            <ion-icon class="text-lg" name="chatbubble-ellipses"></ion-icon> </button>
-                                        <span>260</span>
-                                    </div>
-                                    <button type="button" class="button-icon ml-auto"> <ion-icon class="text-xl"
-                                            name="paper-plane-outline"></ion-icon> </button>
-                                    <button type="button" class="button-icon"> <ion-icon class="text-xl"
-                                            name="share-outline"></ion-icon> </button>
-                                </div>
 
-                                <!-- comments -->
-                                <div
-                                    class="sm:p-4 p-2.5 border-t border-gray-100 font-normal space-y-3 relative dark:border-slate-700/40">
+                                    <!-- comments -->
+                                    <div
+                                        class="sm:p-4 p-2.5 border-t border-gray-100 font-normal space-y-3 relative dark:border-slate-700/40">
 
-                                    @foreach ($poste->commentaires as $comment)
-                                        <div class="flex items-start gap-3 relative">
-                                            <a href="timeline.html"> <img src="assets/images/avatars/avatar-2.jpg"
-                                                    alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
-                                            <div class="flex-1">
-                                                <a href="{{ route('profile', $user->id) }}"
-                                                    class="text-black font-medium inline-block dark:text-white">
-                                                    {{ $comment->user->name }}
-                                                </a>
-                                                <p class="mt-0.5">{{ $comment->contenu }}</p>
+                                        @foreach ($poste->commentaires as $comment)
+                                            <div class="flex items-start gap-3 relative">
+                                                <a href="timeline.html"> <img src="assets/images/avatars/avatar-2.jpg"
+                                                        alt="" class="w-6 h-6 mt-1 rounded-full"> </a>
+                                                <div class="flex-1">
+                                                    <a href="{{ route('profile', $user->id) }}"
+                                                        class="text-black font-medium inline-block dark:text-white">
+                                                        {{ $comment->user->name }}
+                                                    </a>
+                                                    <p class="mt-0.5">{{ $comment->contenu }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                </div>
+                                        @endforeach
+                                    </div>
 
-                                <!-- add comment -->
-                                <div
-                                    class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1 dark:border-slate-700/40">
-                                    <form action="{{ route('addComment', ['idee_id' => $poste->id]) }}"
-                                        method="POST">
+                                    <!-- add comment -->
+                                    <div
+                                        class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1 dark:border-slate-700/40">
+                                        <form action="{{ route('addComment', ['idee_id' => $poste->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <img src="assets/images/avatars/avatar-7.jpg" alt=""
+                                                class="w-6 h-6 rounded-full">
+
+                                            <div class="flex-1 relative overflow-hidden h-10">
+                                                <textarea placeholder="Add Comment.... " rows="1" name="addComment"
+                                                    class="w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
+                                                    aria-haspopup="true" aria-expanded="false"></textarea>
+                                            </div>
+
+
+                                            <button type="submit"
+                                                class="text-sm rounded-full py-1.5 px-3.5 bg-secondery">
+                                                Replay</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                                {{-- update poste --}}
+    
+                                <div class="hidden lg:p-20 uk- open" id="update-post-{{ $poste->id }}" uk-modal="">
+                                
+                                    <form action="{{ route('editPost') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <img src="assets/images/avatars/avatar-7.jpg" alt=""
-                                            class="w-6 h-6 rounded-full">
-
-                                        <div class="flex-1 relative overflow-hidden h-10">
-                                            <textarea placeholder="Add Comment.... " rows="1" name="addComment"
-                                                class="w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
-                                                aria-haspopup="true" aria-expanded="false"></textarea>
+                                        <div
+                                            class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+                                
+                                            <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                                                <h2 class="text-sm font-medium text-black"> Update Post </h2>
+                                
+                                                <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                
+                                            </div>
+                                
+                                            <div class="space-y-5 mt-3 p-2">
+                                                {{-- <label for="titre">Titre</label> --}}
+                                                <input name="titre" id=""
+                                                    class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                    rows="6" placeholder="  Title" value="{{ $poste->titre }}">
+                                            </div>
+                                            <div class="space-y-5 mt-3 p-2">
+                                                <textarea
+                                                    class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                    name="contenu" id="" rows="6" placeholder="What do you have in mind?">{{ $poste->contenu }}</textarea>
+                                            </div>
+                                
+                                            @if ($poste->image)
+                                                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                    Image actuelle :
+                                                    <img src="{{ asset('images/' . $poste->image) }}" name="imgActuelle"
+                                                        class="flex items-center gap-1.5 bg-sky-50 text-sky-600 py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900 w-24">
+                                                </div>
+                                            @endif
+                                            <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                Changer l'image :
+                                                <input name="image" type="file"
+                                                    class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900">
+                                            </div>
+                                
+                                            <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                Categorie :
+                                                <select aria-placeholder="Category"
+                                                    class="flex items-center gap-1.5 bg-teal-50 text-teal-600 rounded-full py-1 px-2 border-2 border-teal-100 dark:bg-teal-950 dark:border-teal-900 w-36"
+                                                    name="category_id" id="">
+                                                    @foreach ($categories as $categorie)
+                                                        <option value="{{ $categorie->id }}" @if ($categorie->id == $poste->category_id) selected @endif>
+                                                            {{ $categorie->Nom }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                @foreach ($tags as $tag)
+                                                    @if ($poste->tags->contains($tag))
+                                                        <button class="button bg-primary-soft text-primary dark:text-white"
+                                                            data-tag="{{ $tag->id }}">
+                                                            #{{ $tag->Name }}
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="button-tag" data-tag="{{ $tag->id }}">
+                                                            #{{ $tag->Name }}
+                                                        </button>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                
+                                
+                                
+                                            <div class="p-5 flex justify-between items-center">
+                                                <div class="flex items-center gap-2">
+                                                    <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                                        Update</button>
+                                                </div>
+                                            </div>
+                                
                                         </div>
-
-
-                                        <button type="submit"
-                                            class="text-sm rounded-full py-1.5 px-3.5 bg-secondery">
-                                            Replay</button>
                                     </form>
+                                
                                 </div>
+                                
+                                    {{-- delete poste --}}
+                                
+                                <div class="hidden lg:p-20 uk- open" id="delete-poste-{{ $poste->id }}" uk-modal="">
+                                    <div
+                                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+                                
+                                        <a href="{{ route('deletePoste', $poste->id) }}"
+                                            class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
+                                            <ion-icon class="text-xl shrink-0 md hydrated" name="stop-circle-outline" role="img"
+                                                aria-label="stop circle outline"></ion-icon> Delete </a>
+                                
+                                    </div>
+                                </div>
+                            @endforeach
 
-                            </div>
-                        @endforeach
+                        @endif
 
                     </div>
 
@@ -558,164 +668,113 @@
         </form>
 
     </div>
+
+
     
-    {{-- update poste --}}
+        {{-- edit description --}}
+        <div class="hidden lg:p-20 uk- open" id="edit-description" uk-modal="">
+            <form action="{{ route('edit-description') }}" method="post">
+                @csrf
+                <div
+                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
     
-    <div class="hidden lg:p-20 uk- open" id="update-post-{{$poste->id}}" uk-modal="">
-
-        <form action="{{ route('editPost') }}" method="POST" enctype="multipart/form-data" >
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Update Post </h2>
-
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-
-                <div class="space-y-5 mt-3 p-2">
-                    <input name="titre" id=""
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        rows="6" placeholder="  Title" value="{{$poste->titre}}">
-                </div>
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="contenu" id="" rows="6" placeholder="What do you have in mind?">{{$poste->contenu}}</textarea>
-                </div>
-
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    <input name="image" type="file"
-                        class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900">
-                </div>
-                @if ($poste->image)
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    <input name="image" type="file" src=""
-                        class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900" >
-                </div>
-                @endif
-
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    <select aria-placeholder="Category"
-                        class="flex items-center gap-1.5 bg-teal-50 text-teal-600 rounded-full py-1 px-2 border-2 border-teal-100 dark:bg-teal-950 dark:border-teal-900"
-                        name="category_id" id="">
-                        @foreach ($categories as $categorie)
-                            <option value="{{ $categorie->id }}" @if ($categorie->id == $poste->category_id) selected @endif>{{ $categorie->Nom }}</option>
-                        @endforeach
-                    </select>
-                </div>                
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    @foreach ($tags as $tag)
-                        <button type="button" class="button-tag" data-tag="{{ $tag->id }}"> #
-                            {{ $tag->Name }}</button>
-                    @endforeach
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Create</button>
+                    <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                        <h2 class="text-sm font-medium text-black"> Edit Description </h2>
+    
+                        <!-- close button -->
+                        <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+    
                     </div>
-                </div>
-
-            </div>
-        </form>
-
-    </div>
-
-    {{-- edit description --}}
-    <div class="hidden lg:p-20 uk- open" id="edit-description" uk-modal="">
-        <form action="{{ route('edit-description') }}" method="post">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Edit Description </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-                <input type="hidden" name="user_id" value="{{ $authUser->id }}">
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="description" id="" rows="6" placeholder="No description yet">{{ $authUser->description }}</textarea>
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Save</button>
+                    <input type="hidden" name="user_id" value="{{ $authUser->id }}">
+                    <div class="space-y-5 mt-3 p-2">
+                        <textarea
+                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                            name="description" id="" rows="6" placeholder="No description yet">{{ $authUser->description }}</textarea>
                     </div>
-                </div>
-
-            </div>
-
-        </form>
-    </div>
-
-
-    <div class="hidden lg:p-20 uk- open" id="edit-bio" uk-modal="">
-        <form action="{{ route('edit-bio') }}" method="post">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Edit Bio </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-                <input type="hidden" name="user_id" value="{{ $authUser->id }}">
-                <div class="space-y-5 mt-3 p-2">
-                    <input name="UserName" id=""
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        rows="6" placeholder="User Name can't be empty !" value="{{ $authUser->name }}">
-                </div>
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="bio" id="" rows="6" placeholder="No bio yet">{{ $authUser->bio }}</textarea>
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Save</button>
+    
+                    <div class="p-5 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                Save</button>
+                        </div>
                     </div>
+    
                 </div>
+    
+            </form>
+        </div>
+    
+    
+        {{-- edit bio --}}
+    
+        <div class="hidden lg:p-20 uk- open" id="edit-bio" uk-modal="">
+            <form action="{{ route('edit-bio') }}" method="post">
+                @csrf
+                <div
+                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+    
+                    <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                        <h2 class="text-sm font-medium text-black"> Edit Bio </h2>
+    
+                        <!-- close button -->
+                        <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+    
+                    </div>
+                    <input type="hidden" name="user_id" value="{{ $authUser->id }}">
+                    <div class="space-y-5 mt-3 p-2">
+                        <input name="UserName" id=""
+                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                            rows="6" placeholder="User Name can't be empty !" value="{{ $authUser->name }}">
+                    </div>
+                    <div class="space-y-5 mt-3 p-2">
+                        <textarea
+                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                            name="bio" id="" rows="6" placeholder="No bio yet">{{ $authUser->bio }}</textarea>
+                    </div>
+    
+                    <div class="p-5 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                Save</button>
+                        </div>
+                    </div>
+    
+                </div>
+    
+            </form>
+        </div>
 
-            </div>
 
-        </form>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tagButtons = document.querySelectorAll('.button-tag');
 
-
+            tagButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tagId = this.dataset.tag;
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name',
+                        'tags[]'); // Utilisez un tableau pour récupérer plusieurs tags
+                    input.setAttribute('value', tagId);
+                    document.getElementById('create-poste').appendChild(input);
+                });
+            });
+        });
+    </script>
     <!-- Javascript  -->
     <script src="{{ asset('js/uikit.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    <script src="assets/js/script.js"></script>
 
 
     <!-- Ion icon -->

@@ -108,13 +108,26 @@
                             class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-white">
 
                             <!-- profile -->
-                            <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
-                                @auth
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt=""
-                                        class="sm:w-9 sm:h-9 w-7 h-7 rounded-full shadow shrink-0">
+                            @auth
+
+                                <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
+                                    <a href="{{ route('profile', $user->id) }}">
+                                        @if ($user->image)
+                                            <img src="{{ asset('images/' . $user->image) }}" alt=""
+                                                class="sm:w-9 sm:h-9 w-7 h-7 rounded-full shadow shrink-0">
+                                        @else
+                                            <img src="{{ asset('images/user.jpg') }}" alt=""
+                                                class="sm:w-9 sm:h-9 w-7 h-7 rounded-full shadow shrink-0">
+                                        @endif
+
+                                    </a>
+
                                 </div>
                                 <a href="{{ route('profile', $user->id) }}">{{ $user->name }}</a>
-                                <a href="{{ route('logout') }}">logout</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit">Logout</button>
+                                </form>
                             @else
                                 <a href="{{ route('register') }}">Register</a>
                                 <a href="{{ route('login') }}">Login</a>
@@ -256,19 +269,20 @@
                                 </div>
 
                             </div>
-                            @else
+                        @else
                             <div
                                 class="bg-white rounded-xl shadow-sm md:p-4 p-2 space-y-4 text-sm font-medium border1 dark:bg-dark2">
 
                                 <div class="flex items-center md:gap-3 gap-1">
-                                    <div class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3">
-                                        <div class="py-2.5 text-center dark:text-white"> Sorry you can't post currently you're blocked
+                                    <div
+                                        class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3">
+                                        <div class="py-2.5 text-center dark:text-white"> Sorry you can't post currently
+                                            you're blocked
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-
                         @endif
 
                         <!-- post text-->
@@ -319,12 +333,12 @@
                                 <div class="sm:px-4 p-2.5 pt-0">
                                     <h3 class="font-bold text-base"> {{ $poste->titre }} </h3>
                                     <br>
-                                    <div class="relative w-full lg:h-96 h-full sm:px-4">
-                                        @if ($poste->image)
+                                    @if ($poste->image)
+                                        <div class="relative w-full lg:h-96 h-full sm:px-4">
                                             <img src="{{ asset('images/' . $poste->image) }}" alt=""
                                                 class="sm:rounded-lg w-full h-full object-cover">
-                                        @endif
-                                    </div>
+                                        </div>
+                                    @endif
                                     <p class="font-normal"> {{ $poste->contenu }}</p><br>
                                     <p class="font-normal">
                                         @foreach ($poste->tags as $tag)
