@@ -1,78 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Mirrored from demo.foxthemes.net/socialite-v3.0/timeline.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 25 Mar 2024 09:50:07 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socialite</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
+    <!-- Favicon -->
+    <link href="assets/images/favicon.png" rel="icon" type="image/png">
+
+    <!-- title and description-->
+    <title>Socialite</title>
+    <meta name="description" content="Socialite - Social sharing network HTML Template">
+
+    <!-- css files -->
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&amp;display=swap"
         rel="stylesheet">
+
 </head>
 
-<body >
+<body>
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-lg dark:bg-dark2">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <a href="#" class="text-lg font-semibold text-gray-800 dark:text-white">Logo</a>
-                    <!-- User Name -->
-                </div>
-                <div class="flex items-center">
-                    <!-- Search Bar -->
-                    <div class="relative">
-                        <input type="text"
-                            class="h-10 w-72 px-4 py-2 pr-8 text-sm bg-gray-100 rounded-full focus:outline-none focus:ring focus:ring-indigo-300 dark:bg-gray-800 dark:text-gray-200"
-                            placeholder="Search...">
-                        <button type="submit"
-                            class="absolute top-0 right-0 mt-3 mr-4 focus:outline-none text-gray-600 dark:text-gray-400">
-                            <ion-icon name="search-outline"></ion-icon>
-                        </button>
-                    </div>
-                    <div class="flex items-center ml-12">
+    <div id="wrapper">
 
-                        @if ($user->image)
-                            <img src="{{ asset('images/' . $user->image) }}" alt=""
-                                class="w-9 h-9 rounded-full">
-                        @else
-                            <img src="{{ asset('images/user.jpg') }}" alt="" class="w-9 h-9 rounded-full">
-                        @endif
-                        <a href="{{ route('profile', $user->id) }}">
-                            <span
-                                class="mx-3 text-sm font-semibold text-gray-700 dark:text-gray-200">{{ $user->name }}</span></a>
-                    </div>
-                    <!-- Logout Button -->
-                    <form action="{{ route('logout') }}" method="post">
-                        @csrf
-                        <button type="submit"
-                            class="ml-4 flex items-center justify-center h-10 w-10 rounded-full text-dark  focus:outline-none">
-                            logout
-                            <ion-icon name="log-out-outline"></ion-icon>
+        <!-- header -->
+        <header
+            class="z-[100] h-[--m-top] fixed top-0 left-0 w-full flex items-center bg-white/80 sky-50 backdrop-blur-xl border-b border-slate-200 dark:bg-dark2 dark:border-slate-800">
+
+            <div class="flex items-center w-full xl:px-6 px-2 max-lg:gap-10">
+
+                <div class="2xl:w-[--w-side] lg:w-[--w-side-sm]">
+
+                    <!-- left -->
+                    <div class="flex items-center gap-1">
+
+                        <!-- icon menu -->
+                        <button uk-toggle="target: #site__sidebar ; cls :!-translate-x-0"
+                            class="flex items-center justify-center w-8 h-8 text-xl rounded-full hover:bg-gray-100 xl:hidden dark:hover:bg-slate-600 group">
+                            <ion-icon name="menu-outline" class="text-2xl group-aria-expanded:hidden"></ion-icon>
+                            <ion-icon name="close-outline" class="hidden text-2xl group-aria-expanded:block"></ion-icon>
                         </button>
-                    </form>
+                        <div id="logo">
+                            <a href="feed.html">
+                                <img src="assets/images/logo.png" alt=""
+                                    class="w-28 md:block hidden dark:!hidden">
+                                <img src="assets/images/logo-light.png" alt="" class="dark:md:block hidden">
+                                <img src="assets/images/logo-mobile.png" class="hidden max-md:block w-20 dark:!hidden"
+                                    alt="">
+                                <img src="assets/images/logo-mobile-light.png" class="hidden dark:max-md:block w-20"
+                                    alt="">
+                            </a>
+                        </div>
+
+                    </div>
+
                 </div>
+                <div class="flex-1 relative">
+
+                    <div class="max-w-[1220px] mx-auto flex items-center">
+
+                        <!-- header icons -->
+                        <div
+                            class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-white">
+
+                            <!-- profile -->
+                            @auth
+                                <div class="rounded-full relative bg-secondery cursor-pointer shrink-0">
+                                    <a href="{{ route('profile', $authUser->id) }}">
+                                        @if ($authUser->image)
+                                            <img src="{{ asset('images/' . $authUser->image) }}" alt=""
+                                                class="w-9 h-9 rounded-full">
+                                        @else
+                                            <img src="{{ asset('images/user.jpg') }}" alt=""
+                                                class="w-9 h-9 rounded-full">
+                                        @endif
+
+                                    </a>
+                                </div>
+                                <a href="{{ route('profile', $authUser->id) }}">{{ $authUser->name }}</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit">Logout</button>
+                                </form>
+                            @else
+                                <a href="{{ route('register') }}">Register</a>
+                                <a href="{{ route('login') }}">Login</a>
+
+                            @endauth
+
+                            <div class="flex items-center gap-2 hidden">
+
+                                <img src="assets/images/avatars/avatar-2.jpg" alt=""
+                                    class="w-9 h-9 rounded-full shadow">
+
+                                <div class="w-20 font-semibold text-gray-600"> Hamse </div>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-    </nav>
-    <div id="wrapper" class="m-24 mt-12">
 
+        </header>
 
 
         <!-- main contents -->
         <main id="site__main"
             class="2xl:ml-[--w-side]  xl:ml-[--w-side-sm] p-2.5 h-[calc(100vh-var(--m-top))] mt-[--m-top]">
 
-            <div class="flex flex-col justify-content-center align-items-center max-w-[1065px] mx-auto max-lg:-m-2.5">
+            <div class="max-w-[1065px] mx-auto max-lg:-m-2.5">
 
                 <!-- cover  -->
                 <div class="bg-white shadow lg:rounded-b-2xl lg:-mt-10 dark:bg-dark2">
 
                     <!-- cover -->
-                    <div class="relative overflow-hidden w-full lg:h-72 h-48 bg-purple-100">
+                    <div class="relative overflow-hidden w-full lg:h-72 h-48">
+
+                        <img src="assets/images/avatars/profile-cover.jpg" alt=""
+                            class="h-full w-full object-cover inset-0">
 
                     </div>
 
@@ -98,10 +159,10 @@
                                         aria-label="camera"></ion-icon></button>
                             </div>
 
-                            <div uk-toggle="target: #edit-bio" class="rounded-xl bg-gray-300 w-1/2 text-center h-1/2 box p-5 px-6">
-                                <h3 class="md:text-3xl text-base font-bold text-black dark:text-white">
-                                    {{ $user->name }}
-                                </h3>
+                            <h3 class="md:text-3xl text-base font-bold text-black dark:text-white">
+                                {{ $user->name }}
+                            </h3>
+                            <div uk-toggle="target: #edit-bio">
                                 <p class="mt-2 text-gray-500 dark:text-white/80">{{ $authUser->bio }}
                                     @if ($user->id == auth()->user()->id)
                                         <a href="#" class="text-blue-500 ml-4 inline-block"> Edit </a>
@@ -115,31 +176,30 @@
                     </div>
 
                 </div>
-                {{-- ici ************************************************************************************************************************* --}}
 
                 <div class="flex 2xl:gap-12 gap-10 mt-8 max-lg:flex-col" id="js-oversized">
 
                     <!-- feed story -->
 
-                    <div class="lg:col-span-8 col-span-12">
+                    <div class="flex-1 xl:space-y-6 space-y-3">
 
                         <!-- add story -->
                         @if ($user->id == auth()->user()->id && $authUser->blocked == 0)
                             <div
-                                class="bg-gray-200 rounded-xl shadow-sm p-4 space-y-4 text-sm font-medium border1 ">
+                                class="bg-white rounded-xl shadow-sm p-4 space-y-4 text-sm font-medium border1 dark:bg-dark2">
 
                                 <div class="flex items-center gap-3">
-                                    <div class="flex-1 bg-gray-100  transition-all rounded-lg cursor-pointer dark:bg-dark3"
+                                    <div class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3"
                                         uk-toggle="target: #create-status">
                                         <div class="py-2.5 text-center dark:text-white"> What do you have in mind?
                                         </div>
                                     </div>
-                                    <div class="cursor-pointer  p-1 px-1.5 rounded-lg transition-all bg-pink-100/60 "
+                                    <div class="cursor-pointer hover:bg-opacity-80 p-1 px-1.5 rounded-lg transition-all bg-pink-100/60 hover:bg-pink-100"
                                         uk-toggle="target: #create-status">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="w-8 h-8 stroke-pink-600 fill-pink-200/70" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
+                                            stroke-width="1.5" stroke="#2c3e50" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M15 8h.01" />
                                             <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
@@ -156,7 +216,7 @@
 
                                 <div class="flex items-center md:gap-3 gap-1">
                                     <div
-                                        class="flex-1 bg-slate-100  transition-all rounded-lg cursor-pointer dark:bg-dark3">
+                                        class="flex-1 bg-slate-100 hover:bg-opacity-80 transition-all rounded-lg cursor-pointer dark:bg-dark3">
                                         <div class="py-2.5 text-center dark:text-white"> Sorry you can't post currently
                                             you're blocked
                                         </div>
@@ -169,14 +229,14 @@
                         <!--  post image-->
                         @if ($postes)
                             @foreach ($postes as $poste)
-                                <div class="bg-gray-100 rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2 mt-6 ">
+                                <div class="bg-white rounded-xl shadow-sm text-sm font-medium border1 dark:bg-dark2">
 
                                     <!-- post heading -->
                                     <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
                                         <a href="{{ route('profile', $poste->user->id) }}">
                                             @if ($poste->user->image)
-                                                <img src="{{ asset('images/' . $poste->user->image) }}" alt=""
-                                                    class="w-9 h-9 rounded-full">
+                                                <img src="{{ asset('images/' . $poste->user->image) }}"
+                                                    alt="" class="w-9 h-9 rounded-full">
                                             @else
                                                 <img src="{{ asset('images/user.jpg') }}" alt=""
                                                     class="w-9 h-9 rounded-full">
@@ -190,6 +250,10 @@
                                         </div>
 
                                         <div class="-mr-1">
+                                            <button type="button" class="button__ico w-8 h-8" aria-haspopup="true"
+                                                aria-expanded="false"> <ion-icon class="text-xl md hydrated"
+                                                    name="ellipsis-horizontal" role="img"
+                                                    aria-label="ellipsis horizontal"></ion-icon> </button>
                                             <div class="w-[245px] uk-dropdown"
                                                 uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click">
                                                 <nav>
@@ -201,7 +265,7 @@
                                                     </div>
                                                     <hr>
                                                     <div uk-toggle="target: #delete-poste-{{ $poste->id }}"
-                                                        class="text-red-400 ">
+                                                        class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
                                                         <a href="#">
                                                             <ion-icon class="text-xl shrink-0 md hydrated"
                                                                 name="stop-circle-outline" role="img"
@@ -289,7 +353,7 @@
 
                                     <!-- add comment -->
                                     <div
-                                        class="sm:px-4 sm:py-3 p-2.5 border-t flex items-center gap-1 w-full">
+                                        class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1 dark:border-slate-700/40">
                                         <form action="{{ route('addComment', ['idee_id' => $poste->id]) }}"
                                             method="POST">
                                             @csrf
@@ -311,119 +375,102 @@
 
                                 </div>
                                 {{-- update poste --}}
-
-                                <div class="hidden lg:p-20 uk- open" id="update-post-{{ $poste->id }}"
-                                    uk-modal="">
-
-                                    <form action="{{ route('editPost') }}" method="POST"
-                                        enctype="multipart/form-data">
+    
+                                <div class="hidden lg:p-20 uk- open" id="update-post-{{ $poste->id }}" uk-modal="">
+                                
+                                    <form action="{{ route('editPost') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div
                                             class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
+                                
                                             <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
                                                 <h2 class="text-sm font-medium text-black"> Update Post </h2>
-
-                                                <button type="button"
-                                                    class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M6 18L18 6M6 6l12 12" />
+                                
+                                                <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
                                                 </button>
-
+                                
                                             </div>
-
+                                
                                             <div class="space-y-5 mt-3 p-2">
                                                 {{-- <label for="titre">Titre</label> --}}
                                                 <input name="titre" id=""
                                                     class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                                                    rows="6" placeholder="  Title"
-                                                    value="{{ $poste->titre }}">
+                                                    rows="6" placeholder="  Title" value="{{ $poste->titre }}">
                                             </div>
                                             <div class="space-y-5 mt-3 p-2">
                                                 <textarea
                                                     class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
                                                     name="contenu" id="" rows="6" placeholder="What do you have in mind?">{{ $poste->contenu }}</textarea>
                                             </div>
-
+                                
                                             @if ($poste->image)
-                                                <div
-                                                    class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                     Image actuelle :
-                                                    <img src="{{ asset('images/' . $poste->image) }}"
-                                                        name="imgActuelle"
+                                                    <img src="{{ asset('images/' . $poste->image) }}" name="imgActuelle"
                                                         class="flex items-center gap-1.5 bg-sky-50 text-sky-600 py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900 w-24">
                                                 </div>
                                             @endif
-                                            <div
-                                                class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                            <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                 Changer l'image :
                                                 <input name="image" type="file"
                                                     class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900">
                                             </div>
-
-                                            <div
-                                                class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                
+                                            <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                 Categorie :
                                                 <select aria-placeholder="Category"
                                                     class="flex items-center gap-1.5 bg-teal-50 text-teal-600 rounded-full py-1 px-2 border-2 border-teal-100 dark:bg-teal-950 dark:border-teal-900 w-36"
                                                     name="category_id" id="">
                                                     @foreach ($categories as $categorie)
-                                                        <option value="{{ $categorie->id }}"
-                                                            @if ($categorie->id == $poste->category_id) selected @endif>
+                                                        <option value="{{ $categorie->id }}" @if ($categorie->id == $poste->category_id) selected @endif>
                                                             {{ $categorie->Nom }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div
-                                                class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                            <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                 @foreach ($tags as $tag)
                                                     @if ($poste->tags->contains($tag))
-                                                        <button
-                                                            class="button bg-primary-soft text-primary dark:text-white"
+                                                        <button class="button bg-primary-soft text-primary dark:text-white"
                                                             data-tag="{{ $tag->id }}">
                                                             #{{ $tag->Name }}
                                                         </button>
                                                     @else
-                                                        <button type="button" class="button-tag"
-                                                            data-tag="{{ $tag->id }}">
+                                                        <button type="button" class="button-tag" data-tag="{{ $tag->id }}">
                                                             #{{ $tag->Name }}
                                                         </button>
                                                     @endif
                                                 @endforeach
                                             </div>
-
-
-
+                                
+                                
+                                
                                             <div class="p-5 flex justify-between items-center">
                                                 <div class="flex items-center gap-2">
-                                                    <button type="submit"
-                                                        class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                                    <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
                                                         Update</button>
                                                 </div>
                                             </div>
-
+                                
                                         </div>
                                     </form>
-
+                                
                                 </div>
-
-                                {{-- delete poste --}}
-
-                                <div class="hidden lg:p-20 uk- open" id="delete-poste-{{ $poste->id }}"
-                                    uk-modal="">
+                                
+                                    {{-- delete poste --}}
+                                
+                                <div class="hidden lg:p-20 uk- open" id="delete-poste-{{ $poste->id }}" uk-modal="">
                                     <div
-                                        class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
+                                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+                                
                                         <a href="{{ route('deletePoste', $poste->id) }}"
-                                            class="text-red-400 ">
-                                            <ion-icon class="text-xl shrink-0 md hydrated" name="stop-circle-outline"
-                                                role="img" aria-label="stop circle outline"></ion-icon> Delete
-                                        </a>
-
+                                            class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50">
+                                            <ion-icon class="text-xl shrink-0 md hydrated" name="stop-circle-outline" role="img"
+                                                aria-label="stop circle outline"></ion-icon> Delete </a>
+                                
                                     </div>
                                 </div>
                             @endforeach
@@ -434,11 +481,12 @@
 
                     <!-- sidebar -->
 
-                    <div class="lg:w-1/2 w-full ">
+                    <div class="lg:w-[400px]">
 
-                        <div class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6 rounded-xl bg-gray-200">
+                        <div class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6"
+                            uk-sticky="media: 1024; end: #js-oversized; offset: 80">
 
-                            <div class="box p-5 px-6 ">
+                            <div class="box p-5 px-6">
                                 @if ($user->id == auth()->user()->id)
                                     <div class="flex items-ce justify-between text-black dark:text-white"
                                         uk-toggle="target: #edit-description">
@@ -456,6 +504,9 @@
                                                 d="M3 4v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1zm6 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V4zm5 7h3m-3 4h3m-3 4h3">
                                             </path>
                                         </svg>
+
+                                        {{-- <div> Live In <span class="font-semibold text-black dark:text-white"> Cairo ,
+                                                Eygept </span> </div> --}}
 
                                         <div>{{ $authUser->description }}</div>
                                     </li>
@@ -542,89 +593,89 @@
     </div>
 
 
-
-    {{-- edit description --}}
-    <div class="hidden lg:p-20 uk- open" id="edit-description" uk-modal="">
-        <form action="{{ route('edit-description') }}" method="post">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Edit Description </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-                <input type="hidden" name="user_id" value="{{ $authUser->id }}">
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="description" id="" rows="6" placeholder="No description yet">{{ $authUser->description }}</textarea>
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Save</button>
+    
+        {{-- edit description --}}
+        <div class="hidden lg:p-20 uk- open" id="edit-description" uk-modal="">
+            <form action="{{ route('edit-description') }}" method="post">
+                @csrf
+                <div
+                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+    
+                    <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                        <h2 class="text-sm font-medium text-black"> Edit Description </h2>
+    
+                        <!-- close button -->
+                        <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+    
                     </div>
-                </div>
-
-            </div>
-
-        </form>
-    </div>
-
-
-    {{-- edit bio --}}
-
-    <div class="hidden lg:p-20 uk- open" id="edit-bio" uk-modal="">
-        <form action="{{ route('edit-bio') }}" method="post">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Edit Bio </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-                <input type="hidden" name="user_id" value="{{ $authUser->id }}">
-                <div class="space-y-5 mt-3 p-2">
-                    <input name="UserName" id=""
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        rows="6" placeholder="User Name can't be empty !" value="{{ $authUser->name }}">
-                </div>
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="bio" id="" rows="6" placeholder="No bio yet">{{ $authUser->bio }}</textarea>
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Save</button>
+                    <input type="hidden" name="user_id" value="{{ $authUser->id }}">
+                    <div class="space-y-5 mt-3 p-2">
+                        <textarea
+                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                            name="description" id="" rows="6" placeholder="No description yet">{{ $authUser->description }}</textarea>
                     </div>
+    
+                    <div class="p-5 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                Save</button>
+                        </div>
+                    </div>
+    
                 </div>
-
-            </div>
-
-        </form>
-    </div>
+    
+            </form>
+        </div>
+    
+    
+        {{-- edit bio --}}
+    
+        <div class="hidden lg:p-20 uk- open" id="edit-bio" uk-modal="">
+            <form action="{{ route('edit-bio') }}" method="post">
+                @csrf
+                <div
+                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+    
+                    <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                        <h2 class="text-sm font-medium text-black"> Edit Bio </h2>
+    
+                        <!-- close button -->
+                        <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+    
+                    </div>
+                    <input type="hidden" name="user_id" value="{{ $authUser->id }}">
+                    <div class="space-y-5 mt-3 p-2">
+                        <input name="UserName" id=""
+                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                            rows="6" placeholder="User Name can't be empty !" value="{{ $authUser->name }}">
+                    </div>
+                    <div class="space-y-5 mt-3 p-2">
+                        <textarea
+                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                            name="bio" id="" rows="6" placeholder="No bio yet">{{ $authUser->bio }}</textarea>
+                    </div>
+    
+                    <div class="p-5 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                Save</button>
+                        </div>
+                    </div>
+    
+                </div>
+    
+            </form>
+        </div>
 
 
     <script>
@@ -644,13 +695,18 @@
             });
         });
     </script>
-        <script src="{{ asset('js/uikit.min.js') }}"></script>
+    <!-- Javascript  -->
+    <script src="{{ asset('js/uikit.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 
+
+    <!-- Ion icon -->
     <script type="module" src="../../unpkg.com/ionicons%405.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="../../unpkg.com/ionicons%405.5.2/dist/ionicons/ionicons.js"></script>
 
 
 </body>
 
+<!-- Mirrored from demo.foxthemes.net/socialite-v3.0/timeline.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 25 Mar 2024 09:50:08 GMT -->
 
 </html>

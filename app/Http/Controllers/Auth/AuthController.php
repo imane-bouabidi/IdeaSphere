@@ -19,7 +19,20 @@ class AuthController extends Controller
             $user = User::find(Auth::user()->id);
             $tags = Tag::all();
             $categories = Category::all();
-            $postes = Idee::all();
+
+            $followedCategoriesIds = $user->followedCategories->pluck('id');
+            $followedTagsIds = $user->followedTags->pluck('id');
+
+            $postes = Idee::whereHas('category', function ($query) use ($followedCategoriesIds) {
+                $query->whereIn('id', $followedCategoriesIds);
+            })
+                ->orWhereHas('tags', function ($query) use ($followedTagsIds) {
+                    $query->whereIn('tags.id', $followedTagsIds);
+                })
+                ->orderBy('created_at', 'desc')
+                ->distinct()
+                ->paginate(3);
+
 
             return view('home', compact(['categories', 'postes', 'tags', 'user']));
         } else {
@@ -90,10 +103,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
             'blocked' => 0,
-            'image'=>'user.jpg',
-            'back_image'=>'',
-            'description'=>'',
-            'bio'=>'',
+            'image' => 'user.jpg',
+            'back_image' => '',
+            'description' => '',
+            'bio' => '',
         ]);
         return redirect()->route('login')->with('success', 'Votre compte a été créé avec succès. Veuillez vous connecter.');
     }

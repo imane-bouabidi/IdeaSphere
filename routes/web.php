@@ -69,7 +69,9 @@ Route::get('/show_poste/{id}', [PosteController::class, 'show_poste'])->name('sh
 Route::get('/poste_details/{id}', [PosteController::class, 'poste_details'])->name('poste_details');
 Route::post('/editPost', [PosteController::class, 'editPost'])->name('editPost');
 Route::get('/deletePoste/{id}', [PosteController::class, 'deletePoste'])->name('deletePoste');
-
+//search 
+Route::get('/search', [PosteController::class, 'search'])->name('search');
+        
 
 //users for admin
 

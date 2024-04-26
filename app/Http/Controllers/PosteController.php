@@ -125,6 +125,17 @@ class PosteController extends Controller
         $postes->save();
         return redirect()->route('postes');
     }
+    public function search(Request $request)
+    {
+        $search = $request->input('q');
+
+        $postes = Idee::where('titre', 'like', '%' . $search . '%')->paginate(3);
+
+        $view = view('search_results', compact('postes'))->render();
+
+        // Return the rendered HTML as the response
+        return response()->json(['html' => $view]);
+    }
     public function hide_poste($id)
     {
         $postes = Idee::find($id);
