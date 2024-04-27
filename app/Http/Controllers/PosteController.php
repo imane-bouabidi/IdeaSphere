@@ -162,6 +162,7 @@ class PosteController extends Controller
         return back();
     }
 
+    
     // public function toggleLike(Request $request)
     // {
     //     $postId = $request->input('postId');
