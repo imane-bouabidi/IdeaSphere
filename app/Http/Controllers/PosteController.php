@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
 use App\Models\Idee;
+use App\Models\Like;
 use App\Models\User;
 use App\Models\user_follows_Category;
 use App\Models\user_follows_Tag;
@@ -26,14 +27,14 @@ class PosteController extends Controller
             'category_id' => 'required|exists:categories,id',
             'tags' => 'nullable|array',
         ]);
-    
+
         $imageName = '';
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('images'), $imageName);
         }
-    
+
         $idee = Idee::create([
             'titre' => $request->titre,
             'contenu' => $request->contenu,
@@ -42,10 +43,10 @@ class PosteController extends Controller
             'image' => $imageName,
             'isHidden' => 0,
         ]);
-    
+
         $tags = $request->input('tags', []);
         $idee->tags()->attach($tags);
-    
+
         return back()->with('success', 'Votre idée a été créée avec succès.');
     }
 
@@ -59,14 +60,14 @@ class PosteController extends Controller
             'category_id' => 'required|exists:categories,id',
             'tags' => 'nullable|array',
         ]);
-    
+
         $imageName = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('images'), $imageName);
         }
-    
+
         $idee = Idee::create([
             'titre' => $request->titre,
             'contenu' => $request->contenu,
@@ -75,49 +76,54 @@ class PosteController extends Controller
             'image' => $imageName,
             'isHidden' => 0,
         ]);
-    
+
         $tags = $request->input('tags', []);
         $idee->tags()->attach($tags);
-    
+
         return back()->with('success', 'Votre idée a été créée avec succès.');
     }
     public function follow_tag(Request $request)
     {
-    
+
         user_follows_Tag::create([
             'user_id' => auth()->id(),
             'tag_id' => $request->tag_id,
         ]);
-    
+
         return back()->with('success', 'Votre idée a été créée avec succès.');
     }
     public function follow_category(Request $request)
     {
-    
+
         user_follows_Category::create([
             'user_id' => auth()->id(),
             'category_id' => $request->cat_id,
         ]);
-    
+
         return back()->with('success', 'Votre idée a été créée avec succès.');
     }
-    
+
     public function addComment(Request $request)
     {
         $validatedData = $request->validate([
             'addComment' => 'required|string',
-            'idee_id' => 'required|exists:idees,id'
+            'post_id' => 'required|exists:idees,id'
         ]);
 
         $commentaire = new Commentaire();
         $commentaire->contenu = $validatedData['addComment'];
         $commentaire->user_id = auth()->user()->id;
-        $commentaire->idee_id = $validatedData['idee_id'];
+        $commentaire->idee_id = $validatedData['post_id'];
         $commentaire->save();
-        
-        return back()->with('success', 'Votre commentaire a été créée avec succès.');
+
+        $commentaire = Commentaire::with('user')->find($commentaire->id);
+
+        $newCommentHtml = view('partials.comment', compact('commentaire'))->render();
+
+        return $newCommentHtml;
     }
-    
+
+
     public function show_poste($id)
     {
         $postes = Idee::find($id);
@@ -130,10 +136,10 @@ class PosteController extends Controller
         $search = $request->input('q');
 
         $postes = Idee::where('titre', 'like', '%' . $search . '%')->paginate(3);
+        $user = User::find(Auth::user()->id);
 
-        $view = view('search_results', compact('postes'))->render();
+        $view = view('search_results', compact(['postes', 'user']))->render();
 
-        // Return the rendered HTML as the response
         return response()->json(['html' => $view]);
     }
     public function hide_poste($id)
@@ -147,7 +153,7 @@ class PosteController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $poste = Idee::find($id);
-        return view('SinglePost',compact(['poste','user']));
+        return view('SinglePost', compact(['poste', 'user']));
     }
     public function deletePoste($id)
     {
@@ -155,5 +161,45 @@ class PosteController extends Controller
         $poste->delete();
         return back();
     }
+
+    // public function toggleLike(Request $request)
+    // {
+    //     $postId = $request->input('postId');
+    //     $userId = auth()->user()->id;
+
+    //     $like = Like::where('post_id', $postId)->where('user_id', $userId)->first();
+
+    //     if (!$like) {
+    //         Like::create([
+    //             'post_id' => $postId,
+    //             'user_id' => $userId,
+    //             'liked' => true,
+    //         ]);
+    //     } else {
+    //         $like->delete();
+    //     }
+
+    //     return response()->json(['success' => true]);
+    // }
+
+    // public function toggleDislike(Request $request)
+    // {
+    //     $postId = $request->input('postId');
+    //     $userId = auth()->user()->id;
+
+    //     $like = Like::where('post_id', $postId)->where('user_id', $userId)->first();
+
+    //     if (!$like) {
+    //         Like::create([
+    //             'post_id' => $postId,
+    //             'user_id' => $userId,
+    //             'liked' => false,
+    //         ]);
+    //     } else {
+    //         $like->delete();
+    //     }
+
+    //     return response()->json(['success' => true]);
+    // }
 
 }

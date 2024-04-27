@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 
@@ -71,6 +71,10 @@ Route::post('/editPost', [PosteController::class, 'editPost'])->name('editPost')
 Route::get('/deletePoste/{id}', [PosteController::class, 'deletePoste'])->name('deletePoste');
 //search 
 Route::get('/search', [PosteController::class, 'search'])->name('search');
+//likes
+Route::post('/toggle-like', [PosteController::class, 'toggleLike'])->name('toggle-like');
+Route::post('/toggle-dislike', [PosteController::class, 'toggleDislike'])->name('toggle-dislike');
+
         
 
 //users for admin
@@ -83,6 +87,7 @@ Route::get('/debanner_user/{id}', [AminController::class, 'debanner_user'])->nam
 
 //User
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
+Route::post('/updateImage', [UserController::class, 'updateImage'])->name('updateImage');
 Route::post('/edit-description', [UserController::class, 'edit_description'])->name('edit-description');
 Route::post('/edit-bio', [UserController::class, 'edit_bio'])->name('edit-bio');
 

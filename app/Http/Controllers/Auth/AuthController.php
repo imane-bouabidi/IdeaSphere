@@ -17,13 +17,14 @@ class AuthController extends Controller
     {
         if (Auth::check()) {
             $user = User::find(Auth::user()->id);
-            $tags = Tag::all();
-            $categories = Category::all();
-
+            
             $followedCategoriesIds = $user->followedCategories->pluck('id');
             $followedTagsIds = $user->followedTags->pluck('id');
+            
+            $tags = Tag::whereNotIn('id', $followedTagsIds)->get();
+            $categories = Category::whereNotIn('id', $followedCategoriesIds)->get();
 
-            $postes = Idee::whereHas('category', function ($query) use ($followedCategoriesIds) {
+            $FollowedPostes = Idee::whereHas('category', function ($query) use ($followedCategoriesIds) {
                 $query->whereIn('id', $followedCategoriesIds);
             })
                 ->orWhereHas('tags', function ($query) use ($followedTagsIds) {
@@ -33,23 +34,17 @@ class AuthController extends Controller
                 ->distinct()
                 ->paginate(3);
 
-
+                if (!$FollowedPostes->isEmpty()) {
+                    $postes = $FollowedPostes;
+                }else{
+                    $postes = Idee::orderBy('created_at', 'desc')->paginate(3);
+                }
             return view('home', compact(['categories', 'postes', 'tags', 'user']));
         } else {
             // Handle the case where the user is not authenticated
             return redirect()->route('login');
         }
     }
-
-    // $user = Auth::user();
-    // $followedTags = $user ? $user->followedTags : collect(); 
-    // $ideaIds = [];
-    // if ($followedTags->isNotEmpty()) {
-    //     $ideaIds = $followedTags->pluck('id')->toArray();
-    //     $postes = Idee::whereIn('id', $ideaIds)->latest()->paginate(10); 
-    // } else {
-    //     $postes = Idee::all();
-    // }
 
 
     public function showLoginForm()

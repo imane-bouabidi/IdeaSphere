@@ -63,4 +63,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Idee::class);
     }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }
