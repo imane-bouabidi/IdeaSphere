@@ -43,43 +43,33 @@ class PosteController extends Controller
             'isHidden' => 0,
         ]);
 
-        $tags = $request->input('tags', []);
+        $tags = $request->input('tags');
         $idee->tags()->attach($tags);
 
-        return back()->with('success', 'Votre idée a été créée avec succès.');
+        return back();
     }
 
     public function editPost(Request $request)
     {
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'contenu' => 'required|string',
-            'image' => 'nullable|image|max:2048',
-            'imgActuelle' => 'nullable|image|max:2048',
-            'category_id' => 'required|exists:categories,id',
-            'tags' => 'nullable|array',
-        ]);
+        $post = Idee::find($request->poste_id);
+        
+        $post->titre = $request->input('titre');
+        $post->contenu = $request->input('contenu');
+        $post->category_id = $request->input('category_id');
 
-        $imageName = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
+            $post->image = $imageName;
         }
 
-        $idee = Idee::create([
-            'titre' => $request->titre,
-            'contenu' => $request->contenu,
-            'user_id' => auth()->id(),
-            'category_id' => $request->category_id,
-            'image' => $imageName,
-            'isHidden' => 0,
-        ]);
+        $post->tags()->sync($request->input('tags'));
 
-        $tags = $request->input('tags', []);
-        $idee->tags()->attach($tags);
+        $post->save();
 
-        return back()->with('success', 'Votre idée a été créée avec succès.');
+
+        return back();
     }
     public function follow_tag(Request $request)
     {
@@ -89,7 +79,7 @@ class PosteController extends Controller
             'tag_id' => $request->tag_id,
         ]);
 
-        return back()->with('success', 'Votre idée a été créée avec succès.');
+        return back();
     }
     public function follow_category(Request $request)
     {
@@ -99,7 +89,7 @@ class PosteController extends Controller
             'category_id' => $request->cat_id,
         ]);
 
-        return back()->with('success', 'Votre idée a été créée avec succès.');
+        return back();
     }
 
     public function addComment(Request $request)

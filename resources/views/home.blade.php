@@ -47,7 +47,6 @@
                         <button type="submit"
                             class="ml-4 flex items-center justify-center h-10 w-10 rounded-full text-dark  focus:outline-none">
                             logout
-                            <ion-icon name="log-out-outline"></ion-icon>
                         </button>
                     </form>
                 </div>
@@ -95,7 +94,7 @@
                                 <p class="font-normal">
                                     @foreach ($poste->tags as $tag)
                                         <button
-                                            class="button bg-primary-soft text-primary dark:text-white">#{{ $tag->Name }}</button>
+                                            class="button bg-yellow-100 p-2 rounded-full text-primary dark:text-white">#{{ $tag->Name }}</button>
                                     @endforeach
                                 </p>
                             </div>
@@ -238,53 +237,6 @@
         </div>
     </main>
 
-    <!-- Create Post Modal -->
-    <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden"
-        id="create-post-modal">
-        <div class="bg-white rounded-lg shadow-lg w-96">
-            <div class="flex items-center justify-between px-4 py-3 border-b">
-                <h3 class="text-lg font-semibold">Create Post</h3>
-                <button id="close-modal-btn" class="text-gray-500 hover:text-gray-600 focus:outline-none">
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <form action="{{ route('create') }}" method="POST" enctype="multipart/form-data" class="px-4 py-3">
-                @csrf
-                <input type="text" name="title" placeholder="Title"
-                    class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <textarea name="content" rows="4" placeholder="Content"
-                    class="block w-full mt-3 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
-                <input type="file" name="image" class="block mt-3">
-                <select name="category"
-                    class="block w-full mt-3 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                <button type="submit"
-                    class="block w-full mt-4 py-2 px-4 bg-indigo-500 text-white font-semibold rounded-md transition duration-200 hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50">Create</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- JavaScript -->
-    <script>
-        const createPostModal = document.getElementById('create-post-modal');
-        const openModalBtn = document.getElementById('open-modal-btn');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-
-        openModalBtn.addEventListener('click', function() {
-            createPostModal.classList.remove('hidden');
-        });
-
-        closeModalBtn.addEventListener('click', function() {
-            createPostModal.classList.add('hidden');
-        });
-    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

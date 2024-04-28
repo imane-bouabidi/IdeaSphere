@@ -16,8 +16,9 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
-                    <a href="#" class="text-lg font-semibold text-gray-800 dark:text-white">Logo</a>
-                    <!-- User Name -->
+                    <a href="{{route('home')}}" class="text-lg font-semibold text-gray-800 dark:text-white">
+                        <img src="{{asset('images/logo2.png')}}" alt="" class="w-24 ">
+                    </a>                    <!-- User Name -->
                 </div>
                 <div class="flex items-center">
                     <div class="flex items-center ml-12">
@@ -84,9 +85,9 @@
                                 <p class="font-normal"> {{ $poste->contenu }}</p><br>
                                 <p class="font-normal">
                                     @foreach ($poste->tags as $tag)
-                                        <button
-                                            class="button bg-primary-soft text-primary dark:text-white">#{{ $tag->Name }}</button>
-                                    @endforeach
+                                    <button
+                                        class="button bg-yellow-100 p-2 rounded-full text-primary dark:text-white">#{{ $tag->Name }}</button>
+                                @endforeach
                                 </p>
                             </div>
                             <!-- Post Icons -->
@@ -157,20 +158,6 @@
             </div>
         </div>
     </main>
-    <!-- JavaScript -->
-    <script>
-        const createPostModal = document.getElementById('create-post-modal');
-        const openModalBtn = document.getElementById('open-modal-btn');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-
-        openModalBtn.addEventListener('click', function() {
-            createPostModal.classList.remove('hidden');
-        });
-
-        closeModalBtn.addEventListener('click', function() {
-            createPostModal.classList.add('hidden');
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.commentForm').forEach(form => {

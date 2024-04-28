@@ -41,7 +41,6 @@ class AuthController extends Controller
                 }
             return view('home', compact(['categories', 'postes', 'tags', 'user']));
         } else {
-            // Handle the case where the user is not authenticated
             return redirect()->route('login');
         }
     }

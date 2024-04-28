@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $authUser = User::find(Auth::user()->id);
         $user = User::find($id);
-        $postes = Idee::where('user_id', $user->id)->paginate(3);
+        $postes = Idee::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(3);
         $categories = Category::all();
         $tags = Tag::all();
         return view('user.profile', compact(['user', 'postes', 'authUser', 'categories', 'tags']));

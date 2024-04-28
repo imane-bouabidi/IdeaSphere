@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-</head>
+    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&amp;display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"></head>
 
 <body>
 
@@ -16,10 +17,16 @@
             <header class="col-md-12 bg-dark text-white">
                 <div class="d-flex justify-content-between align-items-center py-3 px-4">
                     <h1 class="m-0">Home</h1>
-                    <div>
-                        <a href="{{route('home')}}" class="text-white mr-12">home</a>
-                        <a href="{{route('logout')}}" class="text-white">Logout</a>
+                    <div class="flex">
+                        <a href="{{ route('home') }}" class="ml-4 flex items-center justify-center h-10 w-10 rounded-full no-underline text-white">home</a>
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button type="submit" class="ml-4 flex items-center justify-center h-10 w-10 rounded-full">
+                                logout
+                            </button>
+                        </form>
                     </div>
+                    
                 </div>
             </header>
         </div>

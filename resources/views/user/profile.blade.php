@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socialite</title>
+    <title>Profile</title>
     {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" /> --}}
@@ -22,8 +22,9 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
-                    <a href="#" class="text-lg font-semibold text-gray-800 dark:text-white">Logo</a>
-                    <!-- User Name -->
+                    <a href="{{route('home')}}" class="text-lg font-semibold text-gray-800 dark:text-white">
+                        <img src="{{asset('images/logo2.png')}}" alt="" class="w-24 ">
+                    </a>                    <!-- User Name -->
                 </div>
                 <div class="flex items-center">
                     <div class="flex items-center ml-12">
@@ -98,10 +99,76 @@
                                 <p class="mt-2 text-gray-500 dark:text-white/80">{{ $authUser->bio }}
                                     @if ($user->id == auth()->user()->id)
                                         <div uk-toggle="target: #edit-bio">
-                                            <a href="#" class="text-blue-500 ml-4 inline-block"> Edit </a>
+
+                                            <div class="flex justify-center">
+                                                <a href="#" class="w-5 mx-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                        <path fill="#12a11b"
+                                                            d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="hidden fixed z-10 inset-0 overflow-y-auto lg:p-20 uk- open"
+                                            id="edit-bio" uk-modal="">
+
+                                            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                                            </div>
+                                            <form action="{{ route('edit-bio') }}" method="post"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div
+                                                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+
+                                                    <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                                                        <h2 class="text-sm font-medium text-black"> Edit Bio </h2>
+
+                                                        <!-- close button -->
+                                                        <button type="button"
+                                                            class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+
+                                                    </div>
+                                                    <input type="hidden" name="user_id" value="{{ $authUser->id }}">
+                                                    <div class="space-y-5 mt-3 p-2">
+                                                        <input name="imageProfile" id=""
+                                                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                            rows="6" placeholder="User Name can't be empty !"
+                                                            type="file">
+                                                    </div>
+                                                    <div class="space-y-5 mt-3 p-2">
+                                                        <input name="UserName" id=""
+                                                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                            rows="6" placeholder="User Name can't be empty !"
+                                                            value="{{ $authUser->name }}">
+                                                    </div>
+                                                    <div class="space-y-5 mt-3 p-2">
+                                                        <textarea
+                                                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                            name="bio" id="" rows="6" placeholder="No bio yet">{{ $authUser->bio }}</textarea>
+                                                    </div>
+
+                                                    <div class="p-5 flex justify-between items-center">
+                                                        <div class="flex items-center gap-2">
+                                                            <button type="submit"
+                                                                class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                                                Save</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
                                         </div>
                                     @endif
-
                                 </p>
                             </div>
 
@@ -122,17 +189,17 @@
                         @if ($user->id == auth()->user()->id)
 
                             @if ($authUser->blocked == 0)
-                                <div
-                                    class="bg-gray-200 rounded-xl shadow-sm p-4 space-y-4 text-sm font-medium border1 ">
+                                <div class="bg-gray-200 rounded-xl shadow-sm p-4 space-y-4 text-sm font-medium border1 "
+                                    uk-toggle="target: #create-poste" uk-modal="">
 
                                     <div class="flex items-center gap-3">
-                                        <div class="flex-1 bg-gray-100  transition-all rounded-lg cursor-pointer dark:bg-dark3"
-                                            uk-toggle="target: #create-status">
+                                        <div
+                                            class="flex-1 bg-gray-100  transition-all rounded-lg cursor-pointer dark:bg-dark3">
                                             <div class="py-2.5 text-center dark:text-white"> What do you have in mind?
                                             </div>
                                         </div>
-                                        <div class="cursor-pointer  p-1 px-1.5 rounded-lg transition-all bg-pink-100/60 "
-                                            uk-toggle="target: #create-status">
+                                        <div
+                                            class="cursor-pointer  p-1 px-1.5 rounded-lg transition-all bg-pink-100/60 ">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="w-8 h-8 stroke-pink-600 fill-pink-200/70" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="#2c3e50" fill="none"
@@ -146,6 +213,87 @@
                                             </svg>
                                         </div>
                                     </div>
+
+                                </div>
+                                <!-- create status -->
+                                <div class="hidden fixed z-10 inset-0 overflow-y-auto lg:p-20 uk- open"
+                                    id="create-poste" uk-modal="">
+
+                                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                                    </div>
+
+                                    <form action="{{ route('create') }}" method="POST"
+                                        enctype="multipart/form-data" id="create-poste">
+                                        @csrf
+                                        <div
+                                            class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+
+                                            <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                                                <h2 class="text-sm font-medium text-black"> Create Status </h2>
+
+                                                <!-- close button -->
+                                                <button type="button"
+                                                    class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
+                                            <div class="space-y-5 mt-3 p-2">
+                                                <input name="titre" id=""
+                                                    class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                    rows="6" placeholder="  Title">
+                                            </div>
+                                            <div class="space-y-5 mt-3 p-2">
+                                                <textarea
+                                                    class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                    name="contenu" id="" rows="6" placeholder="What do you have in mind?"></textarea>
+                                            </div>
+
+                                            <div
+                                                class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap"> Image :
+                                                <input name="image" type="file"
+                                                    class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900">
+                                            </div>
+
+                                            <div
+                                                class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">Categorie :
+                                                <select aria-placeholder="Category"
+                                                    class="flex items-center gap-1.5 bg-teal-50 text-teal-600 rounded-full py-1 px-2 border-2 border-teal-100 dark:bg-teal-950 dark:border-teal-900"
+                                                    name="category_id" id="">
+                                                    @foreach ($categories as $categorie)
+                                                        <option value="{{ $categorie->id }}">{{ $categorie->Nom }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div
+                                                class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap"> Hashtags :
+                                                @foreach ($tags as $tag)
+                                                <label>
+                                                    <input type="checkbox" name="tags[]"
+                                                        value="{{ $tag->id }}">
+                                                    #{{ $tag->Name }}
+                                                </label>
+                                                @endforeach
+                                            </div>
+
+                                            <div class="p-5 flex justify-between items-center">
+                                                <div class="flex items-center gap-2">
+                                                    <button type="submit"
+                                                        class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                                        Create</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
 
                                 </div>
                             @else
@@ -175,8 +323,8 @@
                                     <div class="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
                                         <a href="{{ route('profile', $poste->user->id) }}">
                                             @if ($poste->user->image)
-                                                <img src="{{ asset('images/' . $poste->user->image) }}" alt=""
-                                                    class="w-9 h-9 rounded-full">
+                                                <img src="{{ asset('images/' . $poste->user->image) }}"
+                                                    alt="" class="w-9 h-9 rounded-full">
                                             @else
                                                 <img src="{{ asset('images/user.jpg') }}" alt=""
                                                     class="w-9 h-9 rounded-full">
@@ -189,98 +337,106 @@
                                         </div>
                                         <div class="flex">
                                             <a href="#" class="w-5 mx-2"
-                                            uk-toggle="target: #editModal_{{ $poste->id }}">
+                                                uk-toggle="target: #editModal_{{ $poste->id }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                     <path fill="#12a11b"
                                                         d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
                                                 </svg>
                                             </a>
                                         </div>
-                                        <div class="hidden fixed z-10 inset-0 overflow-y-auto lg:p-20 uk- open" id="editModal_{{ $poste->id }}" uk-modal="">
-                                
-                                            <form action="{{ route('editPost') }}" method="POST" enctype="multipart/form-data">
+                                        <div class="hidden fixed z-10 inset-0 overflow-y-auto lg:p-20 uk- open"
+                                            id="editModal_{{ $poste->id }}" uk-modal="">
+
+                                            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                                            </div>
+                                            <form action="{{ route('editPost') }}" method="POST"
+                                                enctype="multipart/form-data">
                                                 @csrf
                                                 <div
                                                     class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-                                        
                                                     <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
                                                         <h2 class="text-sm font-medium text-black"> Update Post </h2>
-                                        
-                                                        <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+
+                                                        <button type="button"
+                                                            class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12" />
                                                             </svg>
                                                         </button>
-                                        
                                                     </div>
-                                        
+                                                    <input type="hidden" name="poste_id"
+                                                        value="{{ $poste->id }}">
                                                     <div class="space-y-5 mt-3 p-2">
                                                         {{-- <label for="titre">Titre</label> --}}
                                                         <input name="titre" id=""
-                                                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                                                            rows="6" placeholder="  Title" value="{{ $poste->titre }}">
+                                                            class="w-full border-none" rows="6"
+                                                            placeholder="  Title" value="{{ $poste->titre }}">
                                                     </div>
                                                     <div class="space-y-5 mt-3 p-2">
-                                                        <textarea
-                                                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                                                            name="contenu" id="" rows="6" placeholder="What do you have in mind?">{{ $poste->contenu }}</textarea>
+                                                        <textarea class="w-full " name="contenu" id="" rows="6" placeholder="What do you have in mind?">{{ $poste->contenu }}</textarea>
                                                     </div>
-                                        
+
                                                     @if ($poste->image)
-                                                        <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                        <div
+                                                            class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                             Image actuelle :
-                                                            <img src="{{ asset('images/' . $poste->image) }}" name="imgActuelle"
-                                                                class="flex items-center gap-1.5 bg-sky-50 text-sky-600 py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900 w-24">
+                                                            <img src="{{ asset('images/' . $poste->image) }}"
+                                                                name="imgActuelle"
+                                                                class="flex py-1 px-2 border-2 border-sky-100 w-24">
                                                         </div>
                                                     @endif
-                                                    <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                    <div
+                                                        class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                         Changer l'image :
                                                         <input name="image" type="file"
-                                                            class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900">
+                                                            class="flex rounded-full py-1 px-2 border-2 border-sky-100 ">
                                                     </div>
-                                        
-                                                    <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+
+                                                    <div
+                                                        class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                         Categorie :
                                                         <select aria-placeholder="Category"
                                                             class="flex items-center gap-1.5 bg-teal-50 text-teal-600 rounded-full py-1 px-2 border-2 border-teal-100 dark:bg-teal-950 dark:border-teal-900 w-36"
                                                             name="category_id" id="">
                                                             @foreach ($categories as $categorie)
-                                                                <option value="{{ $categorie->id }}" @if ($categorie->id == $poste->category_id) selected @endif>
+                                                                <option value="{{ $categorie->id }}"
+                                                                    @if ($categorie->id == $poste->category_id) selected @endif>
                                                                     {{ $categorie->Nom }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
+                                                    <div
+                                                        class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
                                                         @foreach ($tags as $tag)
-                                                            @if ($poste->tags->contains($tag))
-                                                                <button class="button p-2 bg-green-100 rounded-full text-black"
-                                                                    data-tag="{{ $tag->id }}">
-                                                                    #{{ $tag->Name }}
-                                                                </button>
-                                                            @else
-                                                                <button type="button" class="button-tag " data-tag="{{ $tag->id }}">
-                                                                    #{{ $tag->Name }}
-                                                                </button>
-                                                            @endif
+                                                            <label>
+                                                                <input type="checkbox" name="tags[]"
+                                                                    value="{{ $tag->id }}"
+                                                                    @if ($poste->tags->contains($tag)) checked @endif>
+                                                                #{{ $tag->Name }}
+                                                            </label>
                                                         @endforeach
                                                     </div>
-                                        
-                                        
-                                        
+
+
+
                                                     <div class="p-5 flex justify-between items-center">
                                                         <div class="flex items-center gap-2">
-                                                            <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                                            <button type="submit"
+                                                                class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
                                                                 Update</button>
                                                         </div>
                                                     </div>
-                                        
+
                                                 </div>
                                             </form>
-                                        
+
                                         </div>
 
-                                        <a href="#" class="w-4 mx-2"><svg xmlns="http://www.w3.org/2000/svg"
+                                        <a href="{{route('deletePoste',$poste->id)}}" class="w-4 mx-2"><svg xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 448 512">
                                                 <path fill="#e84921"
                                                     d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
@@ -302,7 +458,7 @@
                                         <p class="font-normal">
                                             @foreach ($poste->tags as $tag)
                                                 <button
-                                                    class="button bg-primary-soft text-primary dark:text-white">#{{ $tag->Name }}</button>
+                                                    class="button bg-yellow-100 p-2 rounded-full text-primary dark:text-white">#{{ $tag->Name }}</button>
                                             @endforeach
                                         </p>
                                     </div>
@@ -391,7 +547,63 @@
                                     @if ($user->id == auth()->user()->id)
                                         <div uk-toggle="target: #edit-description">
 
-                                            <a href="#" class="text-sm text-blue-500">Edit</a>
+                                            <div class="flex">
+                                                <a href="#" class="w-5 mx-2"
+                                                    uk-toggle="target: #editDescription">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                        <path fill="#12a11b"
+                                                            d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="hidden fixed z-10 inset-0 overflow-y-auto lg:p-20 uk- open"
+                                            id="editDescription" uk-modal="">
+
+                                            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                                            </div>
+                                            <form action="{{ route('edit-description') }}" method="post">
+                                                @csrf
+                                                <div
+                                                    class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
+
+                                                    <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
+                                                        <h2 class="text-sm font-medium text-black"> Edit Description
+                                                        </h2>
+
+                                                        <!-- close button -->
+                                                        <button type="button"
+                                                            class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+
+                                                    </div>
+                                                    <input type="hidden" name="user_id"
+                                                        value="{{ $authUser->id }}">
+                                                    <div class="space-y-5 mt-3 p-2">
+                                                        <textarea
+                                                            class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
+                                                            name="description" id="" rows="6" placeholder="No description yet">{{ $authUser->description }}</textarea>
+                                                    </div>
+
+                                                    <div class="p-5 flex justify-between items-center">
+                                                        <div class="flex items-center gap-2">
+                                                            <button type="submit"
+                                                                class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
+                                                                Save</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
                                         </div>
                                     @endif
                                 </div>
@@ -425,180 +637,8 @@
 
     </div>
 
-    <!-- create status -->
-    <div class="hidden lg:p-20 uk- open" id="create-status" uk-modal="">
-
-        <form action="{{ route('create') }}" method="POST" enctype="multipart/form-data" id="create-poste">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Create Status </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-
-                <div class="space-y-5 mt-3 p-2">
-                    <input name="titre" id=""
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        rows="6" placeholder="  Title">
-                </div>
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="contenu" id="" rows="6" placeholder="What do you have in mind?"></textarea>
-                </div>
-
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    <input name="image" type="file"
-                        class="flex items-center gap-1.5 bg-sky-50 text-sky-600 rounded-full py-1 px-2 border-2 border-sky-100 dark:bg-sky-950 dark:border-sky-900">
-                </div>
-
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    <select aria-placeholder="Category"
-                        class="flex items-center gap-1.5 bg-teal-50 text-teal-600 rounded-full py-1 px-2 border-2 border-teal-100 dark:bg-teal-950 dark:border-teal-900"
-                        name="category_id" id="">
-                        @foreach ($categories as $categorie)
-                            <option value="{{ $categorie->id }}">{{ $categorie->Nom }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex items-center gap-2 text-sm py-2 px-4 font-medium flex-wrap">
-                    @foreach ($tags as $tag)
-                        <button type="button" class="button-tag" data-tag="{{ $tag->id }}"> #
-                            {{ $tag->Name }}</button>
-                    @endforeach
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Create</button>
-                    </div>
-                </div>
-
-            </div>
-        </form>
-
-    </div>
 
 
-
-    {{-- edit description --}}
-    <div class="hidden lg:p-20 uk- open" id="edit-description" uk-modal="">
-        <form action="{{ route('edit-description') }}" method="post">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Edit Description </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-                <input type="hidden" name="user_id" value="{{ $authUser->id }}">
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="description" id="" rows="6" placeholder="No description yet">{{ $authUser->description }}</textarea>
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Save</button>
-                    </div>
-                </div>
-
-            </div>
-
-        </form>
-    </div>
-
-
-    {{-- edit bio --}}
-
-    <div class="hidden lg:p-20 uk- open" id="edit-bio" uk-modal="">
-        <form action="{{ route('edit-bio') }}" method="post" enctype="multipart/form-data">
-            @csrf
-            <div
-                class="uk-modal-dialog tt relative overflow-hidden mx-auto bg-white shadow-xl rounded-lg md:w-[520px] w-full dark:bg-dark2">
-
-                <div class="text-center py-4 border-b mb-0 dark:border-slate-700">
-                    <h2 class="text-sm font-medium text-black"> Edit Bio </h2>
-
-                    <!-- close button -->
-                    <button type="button" class="button-icon absolute top-0 right-0 m-2.5 uk-modal-close">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-
-                </div>
-                <input type="hidden" name="user_id" value="{{ $authUser->id }}">
-                <div class="space-y-5 mt-3 p-2">
-                    <input name="imageProfile" id=""
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        rows="6" placeholder="User Name can't be empty !" type="file">
-                </div>
-                <div class="space-y-5 mt-3 p-2">
-                    <input name="UserName" id=""
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        rows="6" placeholder="User Name can't be empty !" value="{{ $authUser->name }}">
-                </div>
-                <div class="space-y-5 mt-3 p-2">
-                    <textarea
-                        class="w-full !text-black placeholder:!text-black !bg-white !border-transparent focus:!border-transparent focus:!ring-transparent !font-normal !text-xl   dark:!text-white dark:placeholder:!text-white dark:!bg-slate-800"
-                        name="bio" id="" rows="6" placeholder="No bio yet">{{ $authUser->bio }}</textarea>
-                </div>
-
-                <div class="p-5 flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="button bg-blue-500 text-white py-2 px-12 text-[14px]">
-                            Save</button>
-                    </div>
-                </div>
-
-            </div>
-
-        </form>
-    </div>
-
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tagButtons = document.querySelectorAll('.button-tag');
-
-            tagButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const tagId = this.dataset.tag;
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'hidden');
-                    input.setAttribute('name',
-                        'tags[]');
-                    input.setAttribute('value', tagId);
-                    document.getElementById('create-poste').appendChild(input);
-                });
-            });
-        });
-    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
