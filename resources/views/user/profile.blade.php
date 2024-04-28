@@ -6,8 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socialite</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" /> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&amp;display=swap"
         rel="stylesheet">
 </head>
@@ -74,12 +77,14 @@
                             <div class="relative lg:h-48 lg:w-48 w-28 h-28 mb-4 z-10">
                                 <div class="">
                                     @if ($user->image)
-                                        <img src="{{ asset('images/' . $user->image) }}" alt="" class="h-48 w-full object-cover inset-0 rounded-full">
+                                        <img src="{{ asset('images/' . $user->image) }}" alt=""
+                                            class="h-48 w-full object-cover inset-0 rounded-full">
                                     @else
-                                        <img src="{{ asset('images/user.jpg') }}" alt="" class="h-48 w-full object-cover inset-0 rounded-full">
+                                        <img src="{{ asset('images/user.jpg') }}" alt=""
+                                            class="h-48 w-full object-cover inset-0 rounded-full">
                                     @endif
                                 </div>
-                                
+
                                 <button type="button"
                                     class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white shadow p-1.5 rounded-full sm:flex hidden">
                                     <ion-icon name="camera" class="text-2xl md hydrated" role="img"
@@ -182,6 +187,65 @@
                                                 <h4 class="text-black dark:text-white"> {{ $poste->user->name }} </h4>
                                             </a>
                                         </div>
+                                        <div class="flex">
+                                            <a href="#" class="w-5 mx-2"
+                                            data-modal-target="editModal_{{ $poste->id }}" data-modal-toggle="editModal_{{ $poste->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path fill="#12a11b"
+                                                        d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                            <!-- Modal for editing post -->
+                                            <div id="editModal_{{ $poste->id }}" tabindex="-1"
+                                                class="modal fixed z-10 inset-0 overflow-y-auto hidden">
+                                                <div
+                                                    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                                    <!-- Background overlay -->
+                                                    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                                                    </div>
+                                                    <div
+                                                        class="inline-block justify-center bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                        <!-- Modal content -->
+                                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                            <div class="sm:flex sm:items-start">
+                                                                <div
+                                                                    class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                                                    <!-- Modal title -->
+                                                                    <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                                                        id="modal-title">
+                                                                        Edit Post 
+                                                                    </h3>
+                                                                    <div class="mt-2">
+                                                                        <input type="text" value="{{$poste->titre}}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                        <div
+                                                            class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                                            <button type="button"
+                                                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                                                Save
+                                                            </button>
+                                                            <button type="button"
+                                                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="w-4 mx-2"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                    <path fill="#e84921"
+                                                        d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                                </svg></a>
+                                        
+
+
                                     </div>
                                     <div class="sm:px-4 p-2.5 pt-0">
                                         <h3 class="font-bold text-base"> {{ $poste->titre }} </h3>
@@ -473,6 +537,7 @@
 
         </form>
     </div>
+
 
 
     <script>

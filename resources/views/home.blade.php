@@ -16,7 +16,9 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
-                    <a href="#" class="text-lg font-semibold text-gray-800 dark:text-white">Logo</a>
+                    <a href="{{route('home')}}" class="text-lg font-semibold text-gray-800 dark:text-white">
+                        <img src="{{asset('images/logo2.png')}}" alt="" class="w-24 ">
+                    </a>
                     <!-- User Name -->
                 </div>
                 <div class="flex items-center">
