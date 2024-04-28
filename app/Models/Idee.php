@@ -16,8 +16,6 @@ class Idee extends Model
         'category_id',
         'image',
         'isHidden',
-        'liked',
-        'disliked',
     ];
 
     public function user()
@@ -40,8 +38,5 @@ class Idee extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function likes()
-    {
-        return $this->hasMany(Like::class);
-    }
+
 }

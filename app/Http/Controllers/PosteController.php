@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
 use App\Models\Idee;
-use App\Models\Like;
 use App\Models\User;
 use App\Models\user_follows_Category;
 use App\Models\user_follows_Tag;
@@ -162,45 +161,5 @@ class PosteController extends Controller
         return back();
     }
 
-    
-    // public function toggleLike(Request $request)
-    // {
-    //     $postId = $request->input('postId');
-    //     $userId = auth()->user()->id;
-
-    //     $like = Like::where('post_id', $postId)->where('user_id', $userId)->first();
-
-    //     if (!$like) {
-    //         Like::create([
-    //             'post_id' => $postId,
-    //             'user_id' => $userId,
-    //             'liked' => true,
-    //         ]);
-    //     } else {
-    //         $like->delete();
-    //     }
-
-    //     return response()->json(['success' => true]);
-    // }
-
-    // public function toggleDislike(Request $request)
-    // {
-    //     $postId = $request->input('postId');
-    //     $userId = auth()->user()->id;
-
-    //     $like = Like::where('post_id', $postId)->where('user_id', $userId)->first();
-
-    //     if (!$like) {
-    //         Like::create([
-    //             'post_id' => $postId,
-    //             'user_id' => $userId,
-    //             'liked' => false,
-    //         ]);
-    //     } else {
-    //         $like->delete();
-    //     }
-
-    //     return response()->json(['success' => true]);
-    // }
 
 }

@@ -42,6 +42,17 @@ class UserController extends Controller
         if ($request->UserName) {
             $user->name = $request->UserName;
         }
+
+        if ($request->hasFile('imageProfile')) {
+            $image = $request->file('imageProfile');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+        
+            $user->image = $imageName;
+        
+            $user->save();
+        }   
+        
         $user->save();
         return back();
     }
